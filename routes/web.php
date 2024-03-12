@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +28,19 @@ Route::get('/listing/{listing}', function ($id) {
 });
 
 Route::get('/login', function () {
-    return view('login');
+    return view('auth.login');
 });
 
 Route::get('/register', function () {
-    return view('register');
+    return view('atuh.register');
 });
+
+Route::post('/register', [RegistrationController::class, 'register']);
 
 Route::get('/listing', function () {
     return view('listing');
 });
+
+Route::post('/login', [RegistrationController::class, 'login'])->name('login');
+Route::get('/account', [RegistrationController::class, 'account']);
+Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
