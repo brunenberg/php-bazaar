@@ -27,15 +27,6 @@ Route::get('/listing/{listing}', function ($id) {
     ]);
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-Route::get('/register', function () {
-    return view('atuh.register');
-});
-
-Route::post('/register', [RegistrationController::class, 'register']);
 
 Route::get('/listing', function () {
     return view('listing');
@@ -43,4 +34,7 @@ Route::get('/listing', function () {
 
 Route::post('/login', [RegistrationController::class, 'login'])->name('login');
 Route::get('/account', [RegistrationController::class, 'account']);
+Route::get('/login', [RegistrationController::class, 'login']);
+Route::get('/register', [RegistrationController::class, 'register']);
+Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');

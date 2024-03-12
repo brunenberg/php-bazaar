@@ -10,6 +10,11 @@ class RegistrationController extends Controller
 {
     public function register(Request $request)
     {
+        // Check of de gebruiker al is ingelogd
+        if (Auth::check()) {
+            return redirect('/account');
+        }
+
         // Valideer de gegevens
         $validatedData = $request->validate([
             'email' => 'required|email|unique:users,email',
@@ -44,6 +49,11 @@ class RegistrationController extends Controller
 
     public function login(Request $request)
     {
+        // Check of de gebruiker al is ingelogd
+        if (Auth::check()) {
+            return redirect('/account');
+        }
+
         // Valideer de gegevens
         $validatedData = $request->validate([
             'email' => 'required|email',
