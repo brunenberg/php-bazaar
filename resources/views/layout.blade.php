@@ -39,7 +39,7 @@
     </div>
   </nav>
   
-    <main>
+    <main class="mx-20">
         @yield('content')
     </main>
 </body>

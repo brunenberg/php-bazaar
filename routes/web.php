@@ -2,6 +2,8 @@
 
 use App\Models\Listing;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegistrationController;
 
 /*
@@ -35,6 +37,13 @@ Route::get('/listing', function () {
 Route::post('/login', [RegistrationController::class, 'login'])->name('login');
 Route::get('/account', [RegistrationController::class, 'account']);
 Route::get('/login', [RegistrationController::class, 'login']);
-Route::get('/register', [RegistrationController::class, 'register']);
+Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
+
+Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
+
+Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
+
+// Deze route moet onderaan
+// Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
