@@ -37,4 +37,19 @@ class CompanyController extends Controller
         $company->save();
         return redirect()->back();
     }
+
+    public function show(string $slug = null)
+    {
+        if (auth()->user()) {
+            $company = Company::slug($slug)->first();
+        } else {
+            $company = Company::slug($slug)->active()->first();
+        }
+
+        if (!$company) {
+            abort(404);
+        }
+
+        return view('company.show', compact('company'));
+    }
 }

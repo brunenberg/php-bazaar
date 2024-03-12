@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegistrationController;
+use App\Models\Company;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +47,4 @@ Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
 
 // Deze route moet onderaan
-// Route::get('/{slug}', [PageController::class, 'show'])->name('page.show');
+Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

@@ -37,4 +37,30 @@
         <input type="hidden" name="companyId" value="{{ $company->id }}">
         <button type="submit" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Opslaan</button>
     </form>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Layout:</h2>
+    <div class="grid grid-cols-3 gap-4 mb-10">
+        <div class="col-span-1 bg-gray-200 p-4">
+            <!-- Inhoud van de linker kolom -->
+            @foreach ($templates as $template)
+                <div id="template-{{$template->id}}" class="rounded-xl p-3 border-b bg-blue-200">
+                    <p>{{$template->name}}</p>
+                    <p>{{$template->description}}</p>
+                    <button onclick="selectTemplate({{$template->id}})" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Selecteer</button>
+                </div>
+            @endforeach
+        </div>
+        <div class="col-span-2 bg-gray-200">
+            <!-- Inhoud van de rechter kolom -->
+            @foreach ($activeTemplates as $template)
+                <div class="rounded-xl p-3 border-b bg-blue-200">
+                    <p>{{$template->name}}</p>
+                    <p>{{$template->description}}</p>
+                    <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Verwijder</button>
+                </div>
+                
+            @endforeach
+        </div>
+    </div>
+    
 </div>

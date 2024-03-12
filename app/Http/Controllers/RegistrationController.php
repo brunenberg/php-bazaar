@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,9 +55,14 @@ class RegistrationController extends Controller
         if (Auth::check()) {
             if (Auth::user()->user_type === 'zakelijke_verkoper') {
                 $company = Company::where('user_id', Auth::user()->id)->first();
+                $templates = Template::all();
+                $activeTemplates = $company->templates()->get();
                 return view('auth.account', [
                     'user' => Auth::user(),
-                    'company' => $company
+                    'company' => $company,
+                    'templates' => $templates,
+                    'activeTemplates' => $activeTemplates
+
                 ]);
             } else {
                 return view('auth.account', [

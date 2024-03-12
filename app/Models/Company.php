@@ -24,4 +24,18 @@ class Company extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeSlug($query, $slug = null)
+    {
+        if ($slug) {
+            return $query->where('slug', $slug);
+        }
+
+        return $query->where('isHomepage', true);
+    }
+
+    public function templates()
+    {
+        return $this->belongsToMany(Template::class)->withPivot('id', 'order', 'data');
+    }
 }
