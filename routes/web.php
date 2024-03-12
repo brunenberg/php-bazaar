@@ -37,3 +37,5 @@ Route::get('/register', function () {
 Route::get('/listing', function () {
     return view('listing');
 });
+
+Route::post('/setlocale', 'LocaleController@setLocale')->name('setlocale');
