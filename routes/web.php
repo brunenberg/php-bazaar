@@ -35,7 +35,7 @@ Route::get('/listing', function () {
 Route::post('/login', [RegistrationController::class, 'login'])->name('login');
 Route::get('/account', [RegistrationController::class, 'account']);
 Route::get('/login', [RegistrationController::class, 'login']);
-Route::get('/register', [RegistrationController::class, 'register']);
+Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 Route::post('/setlocale', 'LocaleController@setLocale')->name('setlocale');

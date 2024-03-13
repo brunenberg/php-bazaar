@@ -36,6 +36,16 @@ class RegistrationController extends Controller
         return redirect('/');
     }
 
+    public function registerForm()
+    {
+        // Als de gebruiker al is ingelogd, stuur hem dan door naar de accountpagina
+        if (Auth::check()) {
+            return redirect('/account');
+        }
+
+        return view('auth.register');
+    }
+
     public function account()
     {
         if (Auth::check()) {
