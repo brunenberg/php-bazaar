@@ -33,9 +33,6 @@ class RegistrationController extends Controller
             $company->user_id = $user->id;
             $company->save();
         }
-      
-        $user->save();
-      
         // Eventueel kun je de gebruiker hier inloggen en doorsturen naar een andere pagina
         Auth::login($user);
 

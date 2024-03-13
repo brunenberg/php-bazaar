@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained('company');
             $table->foreignId('template_id')->constrained('template');
             $table->integer('order');
-            $table->json('data');
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@
     <h1 class="font-bold text-3xl">{{$company->name}}</h1>
     
 
-    @foreach ($templates as $template)
+    @foreach ($templates->sortBy('pivot.order') as $template)
         <div>
             @include('company.templates.'.$template->name, ['company' => $company])
         </div>

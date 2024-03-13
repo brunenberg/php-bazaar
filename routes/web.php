@@ -45,9 +45,15 @@ Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout'
 
 Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 
+Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
+
+Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
+Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
+Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
+Route::post('/templates/order-down', [CompanyController::class, 'orderDown'])->name('templates.orderDown');
+
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
-Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
 
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');
