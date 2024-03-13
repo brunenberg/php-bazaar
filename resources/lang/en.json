@@ -1,5 +1,22 @@
 {
+    "Log in": "Log in",
+    "Register": "Register",
     "Welcome": "Welcome",
-    "Login": "Login",
-    "Latest advertisements": "Latest advertisements"
+    "You are a regular user": "You are a regular user",
+    "You are a business seller": "You are a business seller",
+    "Please sign in to see more content.": "Please sign in to see more content.",
+    "Latest advertisements": "Latest advertisements",
+    "E-mail address": "E-mail address",
+    "Password": "Password",
+    "User type": "User type",
+    "User": "User",
+    "Private seller": "Private seller",
+    "Business seller": "Business seller",
+    "Already have an account?": "Already have an account?",
+    "Log in here": "Log in here",
+    "Don't have an account?": "Don't have an account?",
+    "Register here": "Register here",
+    "The Bazaar": "The Bazaar",
+    "Where bidding begins and finding ends.": "Where bidding begins and finding ends."
+
 }

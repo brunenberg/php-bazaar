@@ -19,6 +19,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->enum('user_type', ['gebruiker', 'particuliere_verkoper', 'zakelijke_verkoper', 'admin']);
+            $table->string('language', 3)->default('nl');
         });
     }
 
