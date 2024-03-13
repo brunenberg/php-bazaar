@@ -16,22 +16,23 @@ class ListingsTableSeeder extends Seeder
     {
         
         $listings = [
-            ['title' => 'Listing 1', 'description' => 'This is a great listing.', 'tags' => 'tag1,tag2,tag3'],
-            ['title' => 'Listing 2', 'description' => 'This is another great listing.', 'tags' => 'tag1,tag2'],
-            ['title' => 'Listing 3', 'description' => 'This is yet another great listing.', 'tags' => 'tag1,tag3'],
-            ['title' => 'Listing 4', 'description' => 'This is a great listing.', 'tags' => 'tag1,tag2,tag3'],
-            ['title' => 'Listing 5', 'description' => 'This is another great listing.', 'tags' => 'tag1,tag2'],
-            ['title' => 'Listing 6', 'description' => 'This is yet another great listing.', 'tags' => 'tag1,tag3'],
-            ['title' => 'Listing 7', 'description' => 'This is a great listing.', 'tags' => 'tag1,tag2,tag3'],
-            ['title' => 'Listing 8', 'description' => 'This is another great listing.', 'tags' => 'tag1,tag2'],
-            ['title' => 'Listing 9', 'description' => 'This is yet another great listing.', 'tags' => 'tag1,tag3'],
+            ['title' => 'Listing 1', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 2', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 3', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 4', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 5', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 6', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 7', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 8', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 9', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
+            ['title' => 'Listing 10', 'description' => 'This is a great listing.', 'image' => '1710329038.jpeg'],
         ];
 
         foreach ($listings as $listing) {
             Listing::create([
                 'title' => $listing['title'],
                 'description' => $listing['description'],
-                'tags' => $listing['tags'],
+                'image' => $listing['image'],
             ]);
         }
     }

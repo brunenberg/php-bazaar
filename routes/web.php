@@ -6,6 +6,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\UserAccountController;
 use App\Models\Company;
 
 /*
@@ -19,26 +20,9 @@ use App\Models\Company;
 |
 */
 
-Route::get('/', function () {
-    return view('home', [
-        'listings' => Listing::all()
-    ]);
-});
-
-Route::get('/listing/{listing}', function ($id) {
-    return view('listing', [
-        'listing' => Listing::find($id)
-    ]);
-});
-
-
-Route::get('/listing', function () {
-    return view('listing');
-});
-
 Route::get('/login', [RegistrationController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [RegistrationController::class, 'login']);
-Route::get('/account', [RegistrationController::class, 'account']);
+Route::get('/account', [UserAccountController::class, 'account']);
 Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');

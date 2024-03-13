@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('listings', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('description');
-            $table->string('image');
-            $table->timestamps();
+        Schema::create('user_favorites', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users'); 
+            $table->foreignId('listing_id')->constrained('listings');
+            $table->primary(['user_id', 'listing_id']);
         });
     }
 
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('listings');
+        Schema::dropIfExists('user_favorites');
     }
 };
