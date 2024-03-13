@@ -8,7 +8,6 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LocaleController;
 use App\Models\Company;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
