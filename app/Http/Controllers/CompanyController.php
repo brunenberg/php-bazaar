@@ -81,10 +81,15 @@ class CompanyController extends Controller
         $template = $company->templates()->wherePivot('id', $pivotId)->first(); // Haal het specifieke template op
         $currentOrder = $template->pivot->order; // Gebruik pivot om het order op te halen
 
-        // Verhoog het order van alle templates met een order lager dan het huidige template
-        $company->templates()->wherePivot('order', '<', $currentOrder)->increment('order');
-        // Verlaag het order van het geselecteerde template met 1 in de koppeltabel
-        $company->templates()->updateExistingPivot($template->id, ['order' => $currentOrder - 1]);
+        // Zoek het template met een order één lager dan het huidige template
+        $targetTemplate = $company->templates()->wherePivot('order', $currentOrder - 1)->first();
+
+        if ($targetTemplate) {
+            // Verhoog het order van het target template
+            $targetTemplate->pivot->update(['order' => $currentOrder]);
+            // Verlaag het order van het geselecteerde template
+            $template->pivot->update(['order' => $currentOrder - 1]);
+        }
 
         return redirect()->back();
     }
@@ -96,12 +101,18 @@ class CompanyController extends Controller
         $template = $company->templates()->wherePivot('id', $pivotId)->first(); // Haal het specifieke template op
         $currentOrder = $template->pivot->order; // Gebruik pivot om het order op te halen
 
-        // Verlaag het order van alle templates met een order hoger dan het huidige template
-        $company->templates()->wherePivot('order', '>', $currentOrder)->decrement('order');
-        // Verhoog het order van het geselecteerde template met 1 in de koppeltabel
-        $company->templates()->updateExistingPivot($template->id, ['order' => $currentOrder + 1]);
+        // Zoek het template met een order één hoger dan het huidige template
+        $targetTemplate = $company->templates()->wherePivot('order', $currentOrder + 1)->first();
+
+        if ($targetTemplate) {
+            // Verlaag het order van het target template
+            $targetTemplate->pivot->update(['order' => $currentOrder]);
+            // Verhoog het order van het geselecteerde template
+            $template->pivot->update(['order' => $currentOrder + 1]);
+        }
 
         return redirect()->back();
     }
+
 
 }
