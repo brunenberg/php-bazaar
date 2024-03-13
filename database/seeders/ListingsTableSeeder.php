@@ -14,6 +14,7 @@ class ListingsTableSeeder extends Seeder
      */
     public function run()
     {
+        
         $listings = [
             ['title' => 'Listing 1', 'description' => 'This is a great listing.', 'tags' => 'tag1,tag2,tag3'],
             ['title' => 'Listing 2', 'description' => 'This is another great listing.', 'tags' => 'tag1,tag2'],

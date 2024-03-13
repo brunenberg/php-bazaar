@@ -1,21 +1,12 @@
 <?php
     namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Model;
     
-    class Listing {
-        public static function all() {
-            return [[
-                'id' => 1,
-                'title' => 'Learn React',
-            ], [
-                'id' => 2,
-                'title' => 'Learn Vue',
-            ]];
-        }
+    class Listing extends Model {
+        
+        protected $fillable = ['title', 'description', 'tags'];
 
-        public static function find($id) {
-            return collect(self::all())->firstWhere('id', $id);
-        }
     }
-
 
 ?>
