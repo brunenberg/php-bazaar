@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use App\Models\Company;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            DB::table('users')->insert([
+            $userId = DB::table('users')->insertGetId([
                 'email' => $user['email'],
                 'password' => bcrypt($user['password']),
                 'user_type' => $user['user_type'],
@@ -27,8 +28,39 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        
+            if ($user['user_type'] === 'zakelijke_verkoper') {
+                $company = new Company();
+                $company->user_id = $userId;
+                $company->save();
+            }
         }
 
+        $faker = \Faker\Factory::create();
+
+        $listings = [
+            ['title' => 'Listing 1', 'description' => $faker->text, 'tags' => 'tag1,tag2,tag3'],
+            ['title' => 'Listing 2', 'description' => $faker->text, 'tags' => 'tag1,tag2'],
+            ['title' => 'Listing 3', 'description' => $faker->text, 'tags' => 'tag1,tag3'],
+            ['title' => 'Listing 4', 'description' => $faker->text, 'tags' => 'tag1,tag2,tag3'],
+            ['title' => 'Listing 5', 'description' => $faker->text, 'tags' => 'tag1,tag2'],
+            ['title' => 'Listing 6', 'description' => $faker->text, 'tags' => 'tag1,tag3'],
+            ['title' => 'Listing 7', 'description' => $faker->text, 'tags' => 'tag1,tag2,tag3'],
+            ['title' => 'Listing 8', 'description' => $faker->text, 'tags' => 'tag1,tag2'],
+            ['title' => 'Listing 9', 'description' => $faker->text, 'tags' => 'tag1,tag3'],
+        ];
+
+        foreach ($listings as $listing) {
+            DB::table('listings')->insert([
+                'title' => $listing['title'],
+                'description' => $listing['description'],
+                'tags' => $listing['tags'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        
         $this->call(TemplateSeeder::class);
     }
 }
