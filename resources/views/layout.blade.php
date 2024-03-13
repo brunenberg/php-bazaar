@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Bazaar</title>
+    <script src="https://kit.fontawesome.com/087f8a3bb8.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>

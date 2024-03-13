@@ -2,7 +2,7 @@
 
     <h2 class="text-2xl font-bold mt-8">Winkel pagina instellingen:</h2>
 
-    <form action="{{ route('update-info') }}" class="mt-4" method="POST">
+    <form action="{{ route('update-info') }}" class="mt-4" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <label for="winkelnaam" class="block">Winkelnaam:</label>
@@ -44,21 +44,48 @@
             <!-- Inhoud van de linker kolom -->
             @foreach ($templates as $template)
                 <div id="template-{{$template->id}}" class="rounded-xl p-3 border-b bg-blue-200">
-                    <p>{{$template->name}}</p>
+                    <p class="font-bold">{{$template->name}}</p>
                     <p>{{$template->description}}</p>
-                    <button onclick="selectTemplate({{$template->id}})" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Selecteer</button>
+                    <form action="{{route('add-template')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="companyId" value="{{$company->id}}">
+                        <input type="hidden" name="templateId" value="{{$template->id}}">
+                        <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Toevoegen</button>
+                    </form>
                 </div>
             @endforeach
         </div>
-        <div class="col-span-2 bg-gray-200">
+        <div class="col-span-2 bg-gray-200 p-4">
             <!-- Inhoud van de rechter kolom -->
-            @foreach ($activeTemplates as $template)
+            @foreach ($activeTemplates->sortBy('pivot.order') as $template)
                 <div class="rounded-xl p-3 border-b bg-blue-200">
-                    <p>{{$template->name}}</p>
+                    <p class="font-bold">{{$template->name}}</p>
                     <p>{{$template->description}}</p>
-                    <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Verwijder</button>
+                    <div class="flex flex-col">
+                        @if (!$loop->first)
+                            <form action="{{ route('templates.orderUp') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="pivotId" value="{{ $template->pivot->id }}">
+                                <input type="hidden" name="companyId" value="{{ $company->id }}">
+                                <button type="submit" class="max-w-5"><i class="fa-solid fa-arrow-up"></i></button>
+                            </form>
+                        @endif
+                        @if (!$loop->last)
+                            <form action="{{ route('templates.orderDown') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="companyId" value="{{ $company->id }}">
+                                <input type="hidden" name="pivotId" value="{{ $template->pivot->id }}">
+                                <button type="submit" class="max-w-5"><i class="fa-solid fa-arrow-down"></i></button>
+                            </form>
+                        @endif
+                        <form action="{{route('remove-template')}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="companyId" value="{{ $company->id }}">
+                            <input type="hidden" name="pivotId" value="{{$template->pivot->id}}">
+                            <button class="max-w-40 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-2">Verwijder</button>
+                        </form>
+                    </div>
                 </div>
-                
             @endforeach
         </div>
     </div>

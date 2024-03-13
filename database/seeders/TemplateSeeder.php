@@ -16,5 +16,10 @@ class TemplateSeeder extends Seeder
             'name' => 'description',
             'description' => 'Description of the company',
         ]);
+
+        Template::factory()->create([
+            'name' => 'image',
+            'description' => 'Image of the company',
+        ]);
     }
 }
