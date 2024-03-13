@@ -49,11 +49,12 @@ class CompanyController extends Controller
         if (!$company) {
             abort(404);
         }
-
         $templates = $company->templates;
 
         return view('company.show', compact('company', 'templates'));
     }
+
+        
 
     public function addTemplate(Request $request)
     {

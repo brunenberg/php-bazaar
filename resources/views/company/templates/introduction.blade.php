@@ -1,0 +1,1 @@
+<p class="text-xl">{{$company->description}}</p>

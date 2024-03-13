@@ -24,6 +24,7 @@ class RegistrationController extends Controller
         $user->email = $validatedData['email'];
         $user->password = bcrypt($validatedData['password']);
         $user->user_type = $validatedData['user_type'];
+        $user->language = 'nl';
         $user->save();
 
         // Als de gebruiker een zakelijke verkoper is, maak dan een bedrijf aan
@@ -32,7 +33,6 @@ class RegistrationController extends Controller
             $company->user_id = $user->id;
             $company->save();
         }
-
         // Eventueel kun je de gebruiker hier inloggen en doorsturen naar een andere pagina
         Auth::login($user);
 
@@ -74,13 +74,18 @@ class RegistrationController extends Controller
         }
     }
 
-    public function login(Request $request)
+    // In je RegistrationController
+    public function showLoginForm()
     {
-        // Check of de gebruiker al is ingelogd
         if (Auth::check()) {
             return redirect('/account');
         }
 
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
         // Valideer de gegevens
         $validatedData = $request->validate([
             'email' => 'required|email',
@@ -93,7 +98,7 @@ class RegistrationController extends Controller
             return redirect('/account');
         } else {
             // Als het inloggen niet lukt, stuur de gebruiker terug naar de inlogpagina
-            return redirect('/login');
+            return redirect('/login')->withErrors(['email' => 'Deze inloggegevens komen niet overeen met onze gegevens.']);
         }
     }
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\LocaleController;
 use App\Models\Company;
 
 /*
@@ -35,9 +36,9 @@ Route::get('/listing', function () {
     return view('listing');
 });
 
-Route::post('/login', [RegistrationController::class, 'login'])->name('login');
+Route::get('/login', [RegistrationController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [RegistrationController::class, 'login']);
 Route::get('/account', [RegistrationController::class, 'account']);
-Route::get('/login', [RegistrationController::class, 'login']);
 Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
@@ -50,6 +51,8 @@ Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('a
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
 Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
 Route::post('/templates/order-down', [CompanyController::class, 'orderDown'])->name('templates.orderDown');
+
+Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
 
 // Deze route moet onderaan
