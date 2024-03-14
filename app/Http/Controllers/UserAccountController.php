@@ -13,6 +13,8 @@ class UserAccountController extends Controller
     public function account()
     {
         if (Auth::check()) {
+            $user = User::find(Auth::user()->id);
+            $favorites = $user->favorites()->get();
             if (Auth::user()->user_type === 'zakelijke_verkoper') {
                 $company = Company::where('user_id', Auth::user()->id)->first();
                 $templates = Template::all();
@@ -21,13 +23,11 @@ class UserAccountController extends Controller
                     'user' => Auth::user(),
                     'company' => $company,
                     'templates' => $templates,
-                    'activeTemplates' => $activeTemplates
+                    'activeTemplates' => $activeTemplates,
+                    'favorites' => $favorites
 
                 ]);
             } else if (Auth::user()->user_type === 'gebruiker') {
-                // Get favorites from pivot table between user and listing called user_favorites
-                $user = User::find(Auth::user()->id);
-                $favorites = $user->favorites()->get();
                 
                 return view('auth.account', [
                     'user' => Auth::user(),
@@ -35,7 +35,8 @@ class UserAccountController extends Controller
                 ]);
             } else {
                 return view('auth.account', [
-                    'user' => Auth::user()
+                    'user' => Auth::user(),
+                    'favorites' => $favorites
                 ]);
             }
         } else {
