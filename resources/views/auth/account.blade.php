@@ -8,8 +8,7 @@
     @include('account-page.gebruiker')
 @endif
 
-@include('components.favorites')
-
+<x-favorites :favorites="$favorites"/>
 
 <div class="container" style="max-width: 400px;">
     <h2>Select Language</h2>

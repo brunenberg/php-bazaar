@@ -1,3 +1,5 @@
+@props(['favorites'])
+
 <div class="container">
     <h2 class="text-2xl font-bold mb-4">Favorieten</h2>
     <div class="flex flex-wrap">
