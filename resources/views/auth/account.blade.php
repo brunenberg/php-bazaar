@@ -8,6 +8,9 @@
     @include('account-page.gebruiker')
 @endif
 
+@include('components.favorites')
+
+
 <div class="container" style="max-width: 400px;">
     <h2>Select Language</h2>
     <form action="{{ route('setlocale') }}" method="POST" style="display: grid; gap: 20px;">
@@ -23,11 +26,12 @@
     </form>
 </div>
 
-<div style="height: 20px;"></div>
+<div class="my-20">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" style="background-color: red; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Uitloggen</button>
+    </form>
+</div>
 
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" style="background-color: red; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Uitloggen</button>
-</form>
 
 @endsection

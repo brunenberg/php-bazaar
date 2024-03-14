@@ -50,29 +50,7 @@ class RegistrationController extends Controller
         return view('auth.register');
     }
 
-    public function account()
-    {
-        if (Auth::check()) {
-            if (Auth::user()->user_type === 'zakelijke_verkoper') {
-                $company = Company::where('user_id', Auth::user()->id)->first();
-                $templates = Template::all();
-                $activeTemplates = $company->templates()->get();
-                return view('auth.account', [
-                    'user' => Auth::user(),
-                    'company' => $company,
-                    'templates' => $templates,
-                    'activeTemplates' => $activeTemplates
-
-                ]);
-            } else {
-                return view('auth.account', [
-                    'user' => Auth::user()
-                ]);
-            }
-        } else {
-            return view('auth.login');
-        }
-    }
+    
 
     // In je RegistrationController
     public function showLoginForm()
