@@ -8,6 +8,9 @@
     @include('account-page.gebruiker')
 @endif
 
+@include('components.favorites')
+
+
 <div class="container" style="max-width: 400px;">
     <h2>Select Language</h2>
     <form action="{{ route('setlocale') }}" method="POST" style="display: grid; gap: 20px;">

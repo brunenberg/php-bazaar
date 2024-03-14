@@ -1,13 +1,15 @@
 <?php
 
+use App\Models\Company;
 use App\Models\Listing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserAccountController;
-use App\Models\Company;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,8 @@ use App\Models\Company;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', [RegistrationController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [RegistrationController::class, 'login']);
@@ -35,6 +39,11 @@ Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('a
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
 Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
 Route::post('/templates/order-down', [CompanyController::class, 'orderDown'])->name('templates.orderDown');
+
+Route::post('/account/remove-favorite', [UserAccountController::class, 'removeFavorite'])->name('account/remove-favorite');
+Route::post('/account/add-favorite', [UserAccountController::class, 'addFavorite'])->name('account/add-favorite');
+
+Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 

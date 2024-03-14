@@ -42,4 +42,26 @@ class UserAccountController extends Controller
             return view('auth.login');
         }
     }
+
+    public function removeFavorite(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $listingId = $request->input('listing_id');
+        $favorite = $user->favorites()->wherePivot('listing_id', $listingId)->first();
+        if ($favorite) {
+            $user->favorites()->detach($favorite->id);
+        }
+        return redirect()->back();
+    }
+
+    public function addFavorite(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $listingId = $request->input('listing_id');
+        if (!$user->favorites()->where('listing_id', $listingId)->exists()) {
+        $user->favorites()->attach($listingId);
+        }
+        return redirect()->back();
+    }
+
 }
