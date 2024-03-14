@@ -17,7 +17,7 @@
             </div>
         @endforeach
         @if (count($favorites) === 0)
-            <p>Je hebt nog geen favorieten advertenties.</p>
+            <p>Je hebt nog geen favoriete advertenties.</p>
         @endif
     </div>
 </div>
