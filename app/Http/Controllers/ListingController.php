@@ -30,4 +30,17 @@ class ListingController extends Controller
         
         return $qrUrl;
     }
+
+    public function allListings()
+    {
+        $listings = Listing::all();
+        return $listings;
+    }
+
+    // Listings API for specific company
+    public function companyListings($companyId)
+    {
+        $listings = Listing::where('company_id', $companyId)->get();
+        return $listings;
+    }
 }
