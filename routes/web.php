@@ -35,6 +35,9 @@ Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 
 Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
 
+Route::get('/create_listing', [ListingController::class, 'create'])->name('create-listing-form');
+Route::post('/create_listing', [ListingController::class, 'store'])->name('create-listing');
+
 Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
 Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');

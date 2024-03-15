@@ -3,7 +3,7 @@
 @section('content')
 
 @if (auth()->user()->user_type === 'zakelijke_verkoper')
-    @include('account-page.zakelijke-verkoper')
+    @include('account-page.zakelijke_verkoper')
 @elseif (auth()->user()->user_type === 'gebruiker')
     @include('account-page.gebruiker')
 @endif

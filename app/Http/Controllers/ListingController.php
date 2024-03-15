@@ -9,6 +9,42 @@ use Illuminate\Support\Facades\Response;
 
 class ListingController extends Controller
 {
+    public function create()
+    {
+        $company = auth()->user()->company;
+        return view('company.create_listing', ['company' => $company]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $imageName = time().'.'.$request->image->extension();  
+        $request->image->move(public_path('images'), $imageName);
+
+        $listing = new Listing;
+        $listing->title = $request->title;
+        $listing->description = $request->description;
+        $listing->image = $imageName;
+
+        // Check the user type
+        if (auth()->user()->user_type === 'particuliere_verkoper') {
+            $listing->user_id = auth()->id();
+        } else {
+            $listing->company_id = auth()->user()->company->id;
+        }
+
+        $listing->save();
+
+        return back()
+            ->with('success','You have successfully created a listing.')
+            ->with('image',$imageName);
+    }
+
     public function show($id)
     {
         $listing = Listing::find($id);

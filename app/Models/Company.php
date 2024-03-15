@@ -25,6 +25,11 @@ class Company extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function listings()
+    {
+        return $this->hasMany('App\Models\Listing');
+    }
+
     public function scopeSlug($query, $slug = null)
     {
         if ($slug) {
