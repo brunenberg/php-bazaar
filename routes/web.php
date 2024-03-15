@@ -47,6 +47,11 @@ Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.s
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
+Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
+Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
+Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
+Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
+
 
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

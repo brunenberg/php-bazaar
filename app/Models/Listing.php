@@ -13,6 +13,11 @@
             return $this->belongsToMany(User::class, 'user_favorites')->withPivot('user_id', 'listing_id');
         }
 
+        public function reviews()
+        {
+            return $this->belongsToMany(User::class, 'listing_review')->withPivot('user_id', 'listing_id', 'review', 'rating');
+        }
+
     }
 
 ?>
