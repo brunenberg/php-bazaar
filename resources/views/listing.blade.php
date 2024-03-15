@@ -19,5 +19,10 @@
     </div>
 </div>
 
+<div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
+    <h2 class="font-bold text-2xl pb-3">Deel deze advertentie</h2>
+    <img src="{{$qrCode}}" alt="QR Code">
+</div>
+
 
 @endsection
