@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
 
 class CompanyController extends Controller
 {
@@ -119,6 +121,51 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
         return view('company.companies', compact('companies'));
+    }
+
+    public function downloadContract(Request $request)
+    {
+        $company = Company::find($request->input('company_id'));
+        $dompdf = new Dompdf();
+        $html = view('company.contract', compact('company'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream('contract.pdf');
+    }
+
+    public function uploadContract(Request $request)
+    {
+        $company = Company::find($request->input('company_id'));
+        $contract = $request->file('contract');
+        $name = time() . '.' . $contract->getClientOriginalExtension();
+        $destinationPath = public_path('/contracts');
+        $contract->move($destinationPath, $name);
+        // save the file path in the database in contracts table
+        $company->contracts()->create(['path' => $name]);
+        $company->save();
+
+        return redirect()->back();
+    }
+
+    public function acceptContract(Request $request)
+    {
+        $company = auth()->user()->company;
+        $contract = $company->contracts()->find($request->input('contract_id'));
+        $contract->signed = true;
+        $contract->save();
+
+        return redirect()->back();
+    }
+
+    public function rejectContract(Request $request)
+    {
+        $company = auth()->user()->company;
+        $contract = $company->contracts()->find($request->input('contract_id'));
+        $contract->signed = false;
+        $contract->save();
+
+        return redirect()->back();
     }
 
 }

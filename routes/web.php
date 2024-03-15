@@ -49,11 +49,18 @@ Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.s
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
+Route::post('/contract/accept', [CompanyController::class, 'acceptContract'])->name('contract/accept');
+Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->name('contract/reject');
+
+
 // In deze groep zitten alle routes waar alleen admins toegang tot mogen hebben
 Route::middleware(['admin'])->group(function () {
     Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
     Route::post('/company/download-contract', [CompanyController::class, 'downloadContract'])->name('company/download-contract');
+    Route::post('/company/upload-contract', [CompanyController::class, 'uploadContract'])->name('company/upload-contract');
 });
+
+
 
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

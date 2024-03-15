@@ -38,4 +38,9 @@ class Company extends Model
     {
         return $this->belongsToMany(Template::class)->withPivot('id', 'order', 'data');
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
 }
