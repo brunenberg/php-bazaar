@@ -16,7 +16,7 @@
     <h2 class="font-bold text-2xl pb-3">Reviews</h2>
     <div class="grid grid-cols-4">
         @foreach ($company->reviews as $review)
-            <div class="flex flex-col justify-between items-center border-b pb-3 mb-3 bg-white rounded mr-5">
+            <div class="flex flex-col justify-between items-center border-b pb-3 mb-3 bg-white rounded mr-5 text-black">
                 <p class="font-bold">{{$review->email}}</p>
                 <div class="flex">
                     @for ($i = 0; $i < $review->pivot->rating; $i++)
