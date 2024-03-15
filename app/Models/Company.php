@@ -38,4 +38,9 @@ class Company extends Model
     {
         return $this->belongsToMany(Template::class)->withPivot('id', 'order', 'data');
     }
+
+    public function reviews()
+    {
+        return $this->belongsToMany(User::class, 'company_review')->withPivot('user_id', 'company_id', 'review', 'rating');
+    }
 }

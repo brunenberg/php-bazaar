@@ -52,6 +52,11 @@ Route::get('/get_personal_access_token', function () {
     $user = auth()->user(); /** @var User $user */
     return $user->createToken('token')->plainTextToken; 
 })->middleware('auth');
+Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
+Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
+Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
+Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
+
 
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');
