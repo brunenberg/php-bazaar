@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $listings = Listing::all();
+        $listings = Listing::orderBy('updated_at', 'desc')->paginate(12);
         return view('home', compact('listings'));
     }
 }
