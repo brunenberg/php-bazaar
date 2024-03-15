@@ -49,7 +49,7 @@
 </div>
 
 
-@if (auth()->user()->user_type === 'gebruiker')
+@if (auth()->check() && auth()->user()->user_type === 'gebruiker')
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
     <h2 class="font-bold text-2xl pb-3">Review Plaatsen</h2>
     <form action="{{route('listing/review')}}" method="POST">

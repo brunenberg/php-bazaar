@@ -36,7 +36,7 @@
     </div>
 </div>
 
-@if (auth()->user()->user_type === 'gebruiker')
+@if (auth()->check() && auth()->user()->user_type === 'gebruiker')
     <div class="mx-20 mt-5 p-5 rounded bg-[{{$company->background_color}}] text-[{{$company->text_color}}]">
         <h2 class="font-bold text-2xl">Schrijf een review</h2>
         <form action="{{route('company/review')}}" method="POST">
