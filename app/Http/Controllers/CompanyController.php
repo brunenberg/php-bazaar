@@ -136,6 +136,9 @@ class CompanyController extends Controller
 
     public function uploadContract(Request $request)
     {
+        $request->validate([
+            'contract' => 'required|mimes:pdf',
+        ]);
         $company = Company::find($request->input('company_id'));
         $contract = $request->file('contract');
         $name = time() . '.' . $contract->getClientOriginalExtension();
