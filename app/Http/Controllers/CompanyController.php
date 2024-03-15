@@ -115,5 +115,10 @@ class CompanyController extends Controller
         return redirect()->back();
     }
 
+    public function allCompanies()
+    {
+        $companies = Company::all();
+        return view('company.companies', compact('companies'));
+    }
 
 }
