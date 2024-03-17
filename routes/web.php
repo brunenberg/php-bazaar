@@ -3,10 +3,11 @@
 use App\Models\Company;
 use App\Models\Listing;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\RegistrationController;
@@ -59,6 +60,8 @@ Route::post('/listing/review', [ListingController::class, 'addReview'])->name('l
 Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
 Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
 
-
+Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
+Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
+Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');
