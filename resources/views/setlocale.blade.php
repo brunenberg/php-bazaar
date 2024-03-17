@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h2>Select Language</h2>
+        <h2>{!!__('Select language')!!}</h2>
         <form action="{{ route('setlocale') }}" method="POST">
             @csrf
             <input type="hidden" name="locale" value="en">
