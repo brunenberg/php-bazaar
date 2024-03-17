@@ -62,9 +62,7 @@ class ListingController extends Controller
     
         $listing->save();
     
-        return back()
-            ->with('success','You have successfully created a listing.')
-            ->with('image',$imageName);
+        return redirect()->route('listings')->with('success', 'You have successfully created a listing.');
     }
 
     public function edit($id)

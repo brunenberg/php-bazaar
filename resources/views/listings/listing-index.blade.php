@@ -3,6 +3,7 @@
 @section('content')
 <div class="mt-4 container mx-auto">
     <h1 class="text-2xl font-bold mb-4">Your Listings</h1>
+    <a href="{{ route('create-listing-form') }}" class="mt-4 inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Create New Listing</a>
     @if($listings)
         @foreach($listings as $listing)
         <div class="mt-4 p-4 border rounded-md">
@@ -22,6 +23,5 @@
     @else
         <p>No listings found.</p>
     @endif
-    <a href="{{ route('create-listing-form') }}" class="mt-4 inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Create New Listing</a>
 </div>
 @endsection
