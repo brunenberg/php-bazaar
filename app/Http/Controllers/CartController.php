@@ -53,7 +53,10 @@ class CartController extends Controller
     {
         // Add items in cart to user's bought table in database (user_bought)
         foreach ($this->cart->content() as $item) {
-            auth()->user()->bought()->attach($item->id, ['created_at' => now(), 'updated_at' => now()]);
+            $bought = auth()->user()->bought()->where('listing_id', $item->id)->exists();
+            if (!$bought) {
+                auth()->user()->bought()->attach($item->id, ['created_at' => now(), 'updated_at' => now()]);
+            }
         }
 
         $this->cart->destroy();
