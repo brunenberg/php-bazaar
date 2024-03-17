@@ -35,6 +35,13 @@ Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 
 Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
 
+Route::get('/create-listing', [ListingController::class, 'create'])->name('create-listing-form')->middleware('checkUserType');
+Route::post('/create-listing', [ListingController::class, 'store'])->name('create-listing')->middleware('checkUserType');
+Route::get('/listings', [ListingController::class, 'index'])->name('listings')->middleware('checkUserType');
+Route::get('/edit-listing/{id}', [ListingController::class, 'edit'])->name('edit-listing')->middleware('checkListingOwner');
+Route::put('/update-listing/{id}', [ListingController::class, 'update'])->name('update-listing')->middleware('checkListingOwner');
+Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing')->middleware('checkListingOwner');
+
 Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
 Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');

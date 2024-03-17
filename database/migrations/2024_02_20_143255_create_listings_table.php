@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('company_id')->nullable()->constrained('company');
             $table->string('title');
             $table->string('description');
+            $table->enum('type', ['verkoop', 'verhuur']);
             $table->string('image');
             $table->timestamps();
         });
