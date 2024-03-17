@@ -2,13 +2,14 @@
 
 @section('content')
 
+<x-favorites :favorites="$favorites"/>
+
+
 @if (auth()->user()->user_type === 'zakelijke_verkoper')
     @include('account-page.zakelijke-verkoper')
 @elseif (auth()->user()->user_type === 'gebruiker')
     @include('account-page.gebruiker')
 @endif
-
-<x-favorites :favorites="$favorites"/>
 
 <div class="container" style="max-width: 400px;">
     <h2>{!!__('Select language')!!}</h2>

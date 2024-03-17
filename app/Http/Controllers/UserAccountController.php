@@ -28,10 +28,13 @@ class UserAccountController extends Controller
 
                 ]);
             } else if (Auth::user()->user_type === 'gebruiker') {
-                
+                // Get purchases from pivot table
+                $purchases = $user->bought()->get();
+
                 return view('auth.account', [
                     'user' => Auth::user(),
-                    'favorites' => $favorites
+                    'favorites' => $favorites,
+                    'purchases' => $purchases
                 ]);
             } else {
                 return view('auth.account', [
