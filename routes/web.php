@@ -62,6 +62,8 @@ Route::post('/company/delete-review', [CompanyController::class, 'deleteReview']
 
 Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
 Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
+Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
+
 Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

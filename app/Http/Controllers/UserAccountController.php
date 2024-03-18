@@ -19,12 +19,16 @@ class UserAccountController extends Controller
                 $company = Company::where('user_id', Auth::user()->id)->first();
                 $templates = Template::all();
                 $activeTemplates = $company->templates()->get();
+                $bids = $company->listings->map(function ($listing) {
+                    return $listing->bids;
+                })->flatten();
                 return view('auth.account', [
                     'user' => Auth::user(),
                     'company' => $company,
                     'templates' => $templates,
                     'activeTemplates' => $activeTemplates,
-                    'favorites' => $favorites
+                    'favorites' => $favorites,
+                    'bids' => $bids
 
                 ]);
             } else if (Auth::user()->user_type === 'gebruiker') {

@@ -10,4 +10,14 @@ class Bid extends Model
     use HasFactory;
 
     protected $fillable = ['bid', 'accepted'];
+
+    public function listing()
+    {
+        return $this->belongsTo(Listing::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

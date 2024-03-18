@@ -89,4 +89,6 @@
             @endforeach
         </div>
     </div>
+    
+    @include('components.bids')
 </div>
