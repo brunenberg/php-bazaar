@@ -56,7 +56,7 @@ class CompanyController extends Controller
         return view('company.show', compact('company', 'templates'));
     }
 
-        
+
 
     public function addTemplate(Request $request)
     {
@@ -117,11 +117,33 @@ class CompanyController extends Controller
         return redirect()->back();
     }
 
-    public function allCompanies()
+    public function allCompanies(Request $request)
     {
-        $companies = Company::all();
+        $sortBy = $request->query('sortBy', 'created_at');
+        $sortOrder = $request->session()->get('sortOrder', 'asc');
+
+        if ($request->session()->has('sortColumn') && $request->session()->get('sortColumn') === $sortBy) {
+            $sortOrder = $sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        $request->session()->put('sortColumn', $sortBy);
+        $request->session()->put('sortOrder', $sortOrder);
+
+        $filter = $request->query('filter');
+
+        $query = Company::withCount('contracts')->orderBy('contracts_count', $sortOrder);
+
+        if ($filter === 'no_contracts') {
+            $query->has('contracts', '=', 0);
+        }
+
+        $companies = $query->paginate(10);
+
         return view('company.companies', compact('companies'));
     }
+
 
     public function downloadContract(Request $request)
     {
@@ -170,5 +192,4 @@ class CompanyController extends Controller
 
         return redirect()->back();
     }
-
 }

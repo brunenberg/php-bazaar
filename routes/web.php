@@ -56,6 +56,7 @@ Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->n
 // In deze groep zitten alle routes waar alleen admins toegang tot mogen hebben
 Route::middleware(['admin'])->group(function () {
     Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
+    Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
     Route::post('/company/download-contract', [CompanyController::class, 'downloadContract'])->name('company/download-contract');
     Route::post('/company/upload-contract', [CompanyController::class, 'uploadContract'])->name('company/upload-contract');
 });
