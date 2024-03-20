@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Listing;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CartController;
@@ -36,6 +37,13 @@ Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 
 Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
 
+Route::get('/create-listing', [ListingController::class, 'create'])->name('create-listing-form')->middleware('checkUserType');
+Route::post('/create-listing', [ListingController::class, 'store'])->name('create-listing')->middleware('checkUserType');
+Route::get('/listings', [ListingController::class, 'index'])->name('listings')->middleware('checkUserType');
+Route::get('/edit-listing/{id}', [ListingController::class, 'edit'])->name('edit-listing')->middleware('checkListingOwner');
+Route::put('/update-listing/{id}', [ListingController::class, 'update'])->name('update-listing')->middleware('checkListingOwner');
+Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing')->middleware('checkListingOwner');
+
 Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
 Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
@@ -48,6 +56,10 @@ Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.s
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
+Route::get('/get_personal_access_token', function () {
+    $user = auth()->user(); /** @var User $user */
+    return $user->createToken('token')->plainTextToken; 
+})->middleware('auth');
 Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
 Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
 Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');

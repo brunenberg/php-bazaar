@@ -26,6 +26,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Listing::class, 'user_bought')->withPivot('user_id', 'listing_id', 'created_at');
     }
+    
+    public function listings()
+    {
+        return $this->hasMany('App\Models\Listing');
+    }
 
     /**
      * The attributes that are mass assignable.
