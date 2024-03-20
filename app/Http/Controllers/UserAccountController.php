@@ -37,6 +37,15 @@ class UserAccountController extends Controller
                     'user' => Auth::user(),
                     'favorites' => $favorites
                 ]);
+            } else if (Auth::user()->user_type === 'particuliere_verkoper'){
+                $bids = Auth::user()->listings->map(function ($listing) {
+                    return $listing->bids;
+                })->flatten();
+                return view('auth.account', [
+                    'user' => Auth::user(),
+                    'favorites' => $favorites,
+                    'bids' => $bids
+                ]);
             } else {
                 return view('auth.account', [
                     'user' => Auth::user(),

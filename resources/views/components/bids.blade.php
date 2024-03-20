@@ -1,6 +1,6 @@
 <div>
     <h2 class="text-2xl font-bold mt-8">{!!__('Bids')!!}:</h2>
-    <div class="mb-10">
+    <div class="mb-10 max-h-48 overflow-y-auto">
         <table class="w-full mt-4">
             <thead>
                 <tr>
