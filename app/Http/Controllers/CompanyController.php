@@ -121,7 +121,6 @@ class CompanyController extends Controller
     {
         $sortBy = $request->query('sortBy', 'created_at');
         $sortOrder = $request->session()->get('sortOrder', 'asc');
-
         if ($request->session()->has('sortColumn') && $request->session()->get('sortColumn') === $sortBy) {
             $sortOrder = $sortOrder === 'asc' ? 'desc' : 'asc';
         } else {
@@ -143,6 +142,44 @@ class CompanyController extends Controller
 
         return view('company.companies', compact('companies'));
     }
+    
+    public function addReview(Request $request)
+    {
+        $validatedData = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'nullable|string',
+            'company_id' => 'required|integer',
+        ]);
+
+        $company = Company::find($validatedData['company_id']);
+
+        $existingReview = $company->reviews()->where('user_id', auth()->user()->id)->first();
+        if ($existingReview) {
+            return redirect()->back()->with('error', 'You have already placed a review for this company.');
+        }
+
+        $company->reviews()->attach(auth()->user()->id, [
+            'rating' => $validatedData['rating'],
+            'review' => $validatedData['review']
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteReview(Request $request)
+    {
+        $validatedData = $request->validate([
+            'company_id' => 'required|integer'
+        ]);
+
+        $company = Company::find($validatedData['company_id']);
+        $company->reviews()->detach(auth()->user()->id);
+
+        return redirect()->back();
+    }
+
+
+        
 
 
     public function downloadContract(Request $request)

@@ -25,6 +25,11 @@ class Company extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function listings()
+    {
+        return $this->hasMany('App\Models\Listing');
+    }
+
     public function scopeSlug($query, $slug = null)
     {
         if ($slug) {
@@ -42,5 +47,9 @@ class Company extends Model
     public function contracts()
     {
         return $this->hasMany(Contract::class);
+    }
+    public function reviews()
+    {
+        return $this->belongsToMany(User::class, 'company_review')->withPivot('user_id', 'company_id', 'review', 'rating');
     }
 }
