@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('description');
             $table->enum('type', ['verkoop', 'verhuur']);
             $table->string('image');
+            $table->foreignId('company_id')->constrained('company');
             $table->timestamps();
         });
     }

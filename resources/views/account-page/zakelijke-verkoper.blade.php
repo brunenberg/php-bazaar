@@ -90,3 +90,44 @@
         </div>
     </div>
 </div>
+
+<div>
+    <h2 class="text-2xl font-bold mt-8">API:</h2>
+    <button id="copyUrlButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Kopieer API URL</button>
+    <button id="copyTokenButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Kopieer API Token</button>
+</div>
+
+<script>
+    document.getElementById('copyUrlButton').addEventListener('click', function() {
+        var copyText = window.location.href + '/api/company/{{$company->id}}/listings';
+        navigator.clipboard.writeText(copyText)
+            .then(function() {
+                console.log('URL gekopieerd naar klembord: ' + copyText);
+            })
+            .catch(function(error) {
+                console.error('Kopiëren naar klembord mislukt: ', error);
+            });
+    });
+
+    document.getElementById('copyTokenButton').addEventListener('click', function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get_personal_access_token', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var personalAccessToken = xhr.responseText;
+                    navigator.clipboard.writeText(personalAccessToken)
+                        .then(function() {
+                            console.log('Token gekopieerd naar klembord: ' + personalAccessToken);
+                        })
+                        .catch(function(error) {
+                            console.error('Kopiëren naar klembord mislukt: ', error);
+                        });
+                } else {
+                    console.error('Er is een fout opgetreden bij het ophalen van het persoonlijke toegangstoken');
+                }
+            }
+        };
+        xhr.send();
+    });
+</script>
