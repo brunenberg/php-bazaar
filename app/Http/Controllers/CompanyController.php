@@ -35,7 +35,7 @@ class CompanyController extends Controller
         }
 
         $company->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Information successfully updated.');;
     }
 
     public function show(string $slug = null)
@@ -63,7 +63,7 @@ class CompanyController extends Controller
         $order = $company->templates()->max('order') + 1;
         $company->templates()->attach($templateId, ['order' => $order]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Template successfully added.');;
     }
 
     public function removeTemplate(Request $request)
@@ -72,7 +72,7 @@ class CompanyController extends Controller
         $company = Company::find($request->input('companyId'));
         $company->templates()->wherePivot('id', $pivotId)->detach();
 
-        return redirect()->back()->with('success', 'Template succesvol verwijderd.');
+        return redirect()->back()->with('success', 'Template successfully removed.');
     }
 
     public function orderUp(Request $request)
@@ -135,7 +135,7 @@ class CompanyController extends Controller
             'review' => $validatedData['review']
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Review added successfully.');;
     }
 
     public function deleteReview(Request $request)
@@ -147,7 +147,7 @@ class CompanyController extends Controller
         $company = Company::find($validatedData['company_id']);
         $company->reviews()->detach(auth()->user()->id);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Review removed successfully.');;
     }
 
 
