@@ -52,7 +52,7 @@ class UserAccountController extends Controller
         if ($favorite) {
             $user->favorites()->detach($favorite->id);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Listing removed from favourites.');
     }
 
     public function addFavorite(Request $request)
@@ -62,7 +62,7 @@ class UserAccountController extends Controller
         if (!$user->favorites()->where('listing_id', $listingId)->exists()) {
         $user->favorites()->attach($listingId);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Listing added to favourites.');
     }
 
 }
