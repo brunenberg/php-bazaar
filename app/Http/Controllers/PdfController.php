@@ -11,6 +11,6 @@ class PdfController extends Controller
     {
         $pdf = app('dompdf.wrapper');
         $pdf->loadHTML('<h1>Test</h1>'); // Hier kun je de HTML van je PDF genereren
-        return $pdf->stream();
+        return $pdf->stream()->with('success', 'PDF generated successfully.');
     }
 }

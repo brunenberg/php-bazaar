@@ -2,6 +2,7 @@
 
 use App\Models\Company;
 use App\Models\Listing;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
@@ -22,6 +23,8 @@ use App\Http\Controllers\RegistrationController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -55,6 +58,22 @@ Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.s
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
 
+Route::post('/contract/accept', [CompanyController::class, 'acceptContract'])->name('contract/accept');
+Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->name('contract/reject');
+
+
+// In deze groep zitten alle routes waar alleen admins toegang tot mogen hebben
+Route::middleware(['admin'])->group(function () {
+    Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
+    Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
+    Route::post('/company/download-contract', [CompanyController::class, 'downloadContract'])->name('company/download-contract');
+    Route::post('/company/upload-contract', [CompanyController::class, 'uploadContract'])->name('company/upload-contract');
+});
+
+Route::get('/get_personal_access_token', function () {
+    $user = auth()->user(); /** @var User $user */
+    return $user->createToken('token')->plainTextToken; 
+})->middleware('auth');
 Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
 Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
 Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');

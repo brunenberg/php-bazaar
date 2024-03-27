@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
             ['email' => 'zakelijk@gmail.com', 'password' => 'zakelijk', 'user_type' => 'zakelijke_verkoper', 'language' => 'nl'],
             ['email' => 'gebruiker@gmail.com', 'password' => 'gebruiker', 'user_type' => 'gebruiker', 'language' => 'nl'],
             ['email' => 'particulier@gmail.com', 'password' => 'particulier', 'user_type' => 'particuliere_verkoper', 'language' => 'nl'],
+            ['email' => 'eigenaar@gmail.com', 'password' => 'eigenaar', 'user_type' => 'admin', 'language' => 'nl'],
         ];
 
         foreach ($users as $user) {

@@ -43,7 +43,7 @@ class ListingController extends Controller
         }
     
         if ($listingsCount >= 4) {
-            return back()->with('error', 'You have reached the maximum number of listings.');
+            return redirect()->back()->with('error', 'You have reached the maximum number of listings.');
         }
     
         $imageName = time().'.'.$request->image->extension();  
@@ -184,5 +184,18 @@ class ListingController extends Controller
         }
         
         return $qrUrl;
+    }
+
+    public function allListings()
+    {
+        $listings = Listing::all();
+        return $listings;
+    }
+
+    // Listings API for specific company
+    public function companyListings($companyId)
+    {
+        $listings = Listing::where('company_id', $companyId)->get();
+        return $listings;
     }
 }
