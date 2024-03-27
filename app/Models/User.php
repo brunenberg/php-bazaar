@@ -27,6 +27,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Listing');
     }
 
+    public function bids()
+    {
+        return $this->hasMany('App\Models\Bid');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

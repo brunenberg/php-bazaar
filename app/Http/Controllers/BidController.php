@@ -9,6 +9,12 @@ class BidController extends Controller
 {
     public function addBid(Request $request)
     {
+        // Check if user has placed 3 bids on whole platform
+        if (auth()->user()->bids->count() >= 4) {
+            return back()->with('error', 'You can only place 4 bids at a time.');
+        }
+
+
         $request->validate([
             'bid' => 'required|numeric',
             'listing_id' => 'required|exists:listings,id'
