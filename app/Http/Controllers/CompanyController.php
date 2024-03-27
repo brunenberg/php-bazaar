@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
 
 class CompanyController extends Controller
 {
@@ -54,7 +56,7 @@ class CompanyController extends Controller
         return view('company.show', compact('company', 'templates'));
     }
 
-        
+
 
     public function addTemplate(Request $request)
     {
@@ -115,6 +117,32 @@ class CompanyController extends Controller
         return redirect()->back();
     }
 
+    public function allCompanies(Request $request)
+    {
+        $sortBy = $request->query('sortBy', 'created_at');
+        $sortOrder = $request->session()->get('sortOrder', 'asc');
+        if ($request->session()->has('sortColumn') && $request->session()->get('sortColumn') === $sortBy) {
+            $sortOrder = $sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            $sortOrder = 'asc';
+        }
+
+        $request->session()->put('sortColumn', $sortBy);
+        $request->session()->put('sortOrder', $sortOrder);
+
+        $filter = $request->query('filter');
+
+        $query = Company::withCount('contracts')->orderBy('contracts_count', $sortOrder);
+
+        if ($filter === 'no_contracts') {
+            $query->has('contracts', '=', 0);
+        }
+
+        $companies = $query->paginate(10);
+
+        return view('company.companies', compact('companies'));
+    }
+    
     public function addReview(Request $request)
     {
         $validatedData = $request->validate([
@@ -151,4 +179,54 @@ class CompanyController extends Controller
     }
 
 
+        
+
+
+    public function downloadContract(Request $request)
+    {
+        $company = Company::find($request->input('company_id'));
+        $dompdf = new Dompdf();
+        $html = view('company.contract', compact('company'))->render();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream('contract.pdf');
+    }
+
+    public function uploadContract(Request $request)
+    {
+        $request->validate([
+            'contract' => 'required|mimes:pdf',
+        ]);
+        $company = Company::find($request->input('company_id'));
+        $contract = $request->file('contract');
+        $name = time() . '.' . $contract->getClientOriginalExtension();
+        $destinationPath = public_path('/contracts');
+        $contract->move($destinationPath, $name);
+        // save the file path in the database in contracts table
+        $company->contracts()->create(['path' => $name]);
+        $company->save();
+
+        return redirect()->back();
+    }
+
+    public function acceptContract(Request $request)
+    {
+        $company = auth()->user()->company;
+        $contract = $company->contracts()->find($request->input('contract_id'));
+        $contract->signed = true;
+        $contract->save();
+
+        return redirect()->back();
+    }
+
+    public function rejectContract(Request $request)
+    {
+        $company = auth()->user()->company;
+        $contract = $company->contracts()->find($request->input('contract_id'));
+        $contract->signed = false;
+        $contract->save();
+
+        return redirect()->back();
+    }
 }

@@ -24,6 +24,8 @@ use App\Http\Controllers\RegistrationController;
 |
 */
 
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', [RegistrationController::class, 'showLoginForm'])->name('login');
@@ -55,6 +57,18 @@ Route::post('/account/add-favorite', [UserAccountController::class, 'addFavorite
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
 
 Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
+
+Route::post('/contract/accept', [CompanyController::class, 'acceptContract'])->name('contract/accept');
+Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->name('contract/reject');
+
+
+// In deze groep zitten alle routes waar alleen admins toegang tot mogen hebben
+Route::middleware(['admin'])->group(function () {
+    Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
+    Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
+    Route::post('/company/download-contract', [CompanyController::class, 'downloadContract'])->name('company/download-contract');
+    Route::post('/company/upload-contract', [CompanyController::class, 'uploadContract'])->name('company/upload-contract');
+});
 
 Route::get('/get_personal_access_token', function () {
     $user = auth()->user(); /** @var User $user */
