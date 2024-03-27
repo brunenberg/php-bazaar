@@ -89,6 +89,55 @@
             @endforeach
         </div>
     </div>
+
+    {{-- Show all contracts with accept en reject buttons --}}
+    <div>
+        <h2 class="text-2xl font-bold mt-8">Contracten:</h2>
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300">Datum</th>
+                    <th class="border border-gray-300">Contract</th>
+                    <th class="border border-gray-300">Getekend</th>
+                    <th class="border border-gray-300">Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($company->contracts as $contract)
+                    <tr>
+                        <td class="border border-gray-300">{{ $contract->created_at->format('Y-m-d') }}</td>
+                        <td class="border border-gray-300">
+                            <a href="{{asset('contracts/'.$contract->path)}}" class="text-blue-700 hover:underline" download>Download</a>
+                        </td>
+                        <td class="border border-gray-300">
+                            @if ($contract->signed === 1)
+                                <i class="fas fa-check text-green-500"></i>
+                            @elseif ($contract->signed === 0)
+                                <i class="fas fa-times text-red-500"></i>
+                            @else
+                                <i class="fas fa-question text-gray-500"></i>
+                            @endif
+                        </td>
+                        <td class="border border-gray-300">
+                            @if ($contract->signed === null)
+                                <form action="{{route('contract/accept')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="contract_id" value="{{$contract->id}}">
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Accepteren</button>
+                                </form>
+                                <form action="{{route('contract/reject')}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="contract_id" value="{{$contract->id}}">
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Afwijzen</button>
+                                </form>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    
 </div>
 
 <div>
