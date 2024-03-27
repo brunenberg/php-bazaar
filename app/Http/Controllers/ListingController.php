@@ -42,7 +42,7 @@ class ListingController extends Controller
         }
     
         if ($listingsCount >= 4) {
-            return back()->with('error', 'You have reached the maximum number of listings.');
+            return redirect()->back()->with('error', 'You have reached the maximum number of listings.');
         }
     
         $imageName = time().'.'.$request->image->extension();  

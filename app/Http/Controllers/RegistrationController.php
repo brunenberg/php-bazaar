@@ -37,7 +37,7 @@ class RegistrationController extends Controller
         Auth::login($user);
 
         // Stuur de gebruiker door naar een bedankpagina of een ander gewenst scherm
-        return redirect('/');
+        return redirect('/')->with('success', 'Account successfully created.');
     }
 
     public function registerForm()
@@ -73,7 +73,7 @@ class RegistrationController extends Controller
         // Probeer de gebruiker in te loggen
         if (Auth::attempt($validatedData)) {
             // Als het inloggen lukt, stuur de gebruiker door naar de accountpagina
-            return redirect('/account');
+            return redirect('/account')->with('success', 'Successfully logged in.');
         } else {
             // Als het inloggen niet lukt, stuur de gebruiker terug naar de inlogpagina
             return redirect('/login')->withErrors(['email' => 'Deze inloggegevens komen niet overeen met onze gegevens.']);
@@ -83,6 +83,6 @@ class RegistrationController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/')->with('success', 'Successfully logged out.');
     }
 }
