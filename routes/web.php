@@ -5,6 +5,7 @@ use App\Models\Listing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\CompanyController;
@@ -77,6 +78,11 @@ Route::post('/company/review', [CompanyController::class, 'addReview'])->name('c
 Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
 Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
 Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
+
+Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('auth');
+Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart')->middleware('auth');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove')->middleware('auth');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout')->middleware('auth');
 
 
 // Deze route moet onderaan

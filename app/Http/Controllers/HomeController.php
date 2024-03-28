@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private $listingsPerPage;
+
+    public function __construct()
+    {
+        $this->listingsPerPage = 9;
+    }
+
     public function index()
     {
-        $listings = Listing::orderBy('updated_at', 'desc')->paginate(12);
+        $listings = Listing::orderBy('updated_at', 'desc')->paginate($this->listingsPerPage);
         return view('home', compact('listings'));
     }
 }
+

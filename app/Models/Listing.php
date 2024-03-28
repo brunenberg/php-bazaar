@@ -24,6 +24,11 @@
             return $this->belongsToMany(User::class, 'listing_review')->withPivot('user_id', 'listing_id', 'review', 'rating');
         }
 
+        public function bought()
+        {
+            return $this->belongsToMany(User::class, 'user_bought')->withPivot('user_id', 'listing_id');
+        }
+
     }
 
 ?>
