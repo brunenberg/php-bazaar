@@ -38,4 +38,18 @@ class BidController extends Controller
         $bid->delete();
         return back()->with('success', 'Bid deleted successfully.');
     }
+
+    public function acceptBid(Request $request)
+    {
+        $request->validate([
+            'bid_id' => 'required|exists:bids,id'
+        ]);
+        $bid = Bid::find($request->bid_id);
+        $bid->accepted = true;
+        $bid->save();
+
+        // Delete all bids form listing
+        Bid::where('listing_id', $bid->listing_id)->delete();
+        return back()->with('success', 'Bid accepted successfully.');
+    }
 }

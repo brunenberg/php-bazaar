@@ -21,8 +21,8 @@
                         <td class="flex">
                             <form action="{{route('listing/accept-bid')}}" method="POST">
                                 @csrf
-                                <input type="hidden" name="bidId" value="{{$bid->id}}">
-                                <input type="hidden" name="listingId" value="{{$bid->listing_id}}">
+                                <input type="hidden" name="bid_id" value="{{$bid->id}}">
+                                <input type="hidden" name="listing_id" value="{{$bid->listing_id}}">
                                 <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">{!!__('Accept')!!}</button>
                             </form>
                             <form action="{{route('listing/decline-bid')}}" method="POST">
