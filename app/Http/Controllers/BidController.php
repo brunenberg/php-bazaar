@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
 use App\Models\Bid;
 use Illuminate\Http\Request;
 
@@ -9,10 +10,10 @@ class BidController extends Controller
 {
     public function addBid(Request $request)
     {
-        // Check if user is owner of listing
-        if (auth()->user()->listings->contains($request->listing_id)) {
-            return back()->with('error', 'You can not place bid on your own listing.');
-        }
+        $listing = Listing::find($request->listing_id);
+         if ($listing->user_id == auth()->id() || ($listing->company_id && $listing->company_id == auth()->user()->company->id)) {
+             return back()->with('error', 'You cannot place a bid on your own listing.');
+         }
 
         // Check if user has placed 3 bids on whole platform
         if (auth()->user()->bids->count() >= 4) {
