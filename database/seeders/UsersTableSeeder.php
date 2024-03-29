@@ -31,9 +31,22 @@ class UsersTableSeeder extends Seeder
             ]);
 
             if ($user['user_type'] === 'zakelijke_verkoper') {
-                $company = new Company();
-                $company->user_id = $newUser->id;
+                $company = Company::create([
+                    'user_id' => $newUser->id,
+                    'name' => 'De winkel van ' . $newUser->id,
+                    'description' => 'Dit is een beschrijving van bedrijf ' . $newUser->id . '. Hier koop je de leukste spullen!',
+                    'image' => 'company.jpg',
+                    'slug' => 'winkel' . $newUser->id,
+                    'background_color' => '#47ffd1',
+                    'text_color' => '#000000',
+                ]);
                 $company->save();
+
+
+                // Add templates to company (Table: company_template - company_id, template_id, order)
+                $company->templates()->attach(['template_id' => 2], ['order' => 0, 'company_id' => $company->id]);
+                $company->templates()->attach(['template_id' => 1], ['order' => 1, 'company_id' => $company->id]);
+                
             }
         }
     }
