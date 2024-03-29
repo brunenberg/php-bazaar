@@ -35,7 +35,7 @@
         </div>
 
         <input type="hidden" name="companyId" value="{{ $company->id }}">
-        <button type="submit" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Save')!!}</button>
+        <button type="submit" id="save_page_settings" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Save')!!}</button>
     </form>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">{!!__('Layout')!!}:</h2>
