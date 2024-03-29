@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('type', ['verkoop', 'verhuur']);
             $table->boolean('bidding_allowed')->default(false);
             $table->string('image');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

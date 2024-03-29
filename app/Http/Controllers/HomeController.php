@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $listings = Listing::orderBy('updated_at', 'desc')->paginate($this->listingsPerPage);
+        $listings = Listing::where('active', true)->orderBy('updated_at', 'desc')->paginate($this->listingsPerPage);
         return view('home', compact('listings'));
     }
 }

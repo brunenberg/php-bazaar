@@ -17,6 +17,13 @@
                     @method('DELETE')
                     <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Delete</button>
                 </form>
+                @if(!$listing->active)
+                <form action="{{ route('activate-listing', $listing->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Activate</button>
+                </form>
+                @endif
             </div>
         </div>
         @endforeach

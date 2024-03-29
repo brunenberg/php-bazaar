@@ -55,6 +55,8 @@ class BidController extends Controller
         $bid->save();
 
         $bid->listing->bought()->attach($bid->user_id, ['created_at' => now()]);
+        $bid->listing->active = false;
+        $bid->listing->save();
         return back()->with('success', 'Bid accepted successfully.');
     }
 

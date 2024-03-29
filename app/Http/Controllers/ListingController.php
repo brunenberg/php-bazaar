@@ -198,4 +198,13 @@ class ListingController extends Controller
         $listings = Listing::where('company_id', $companyId)->get();
         return $listings;
     }
+
+    // Activate listing
+    public function activate($id)
+    {
+        $listing = Listing::find($id);
+        $listing->active = true;
+        $listing->save();
+        return redirect()->back();
+    }
 }

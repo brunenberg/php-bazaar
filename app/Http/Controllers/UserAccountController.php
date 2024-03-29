@@ -42,7 +42,7 @@ class UserAccountController extends Controller
                 ]);
             } else if (Auth::user()->user_type === 'particuliere_verkoper'){
                 $bids = Auth::user()->listings->map(function ($listing) {
-                    return $listing->bids;
+                    return $listing->bids->where('accepted', null);
                 })->flatten();
                 return view('auth.account', [
                     'user' => Auth::user(),

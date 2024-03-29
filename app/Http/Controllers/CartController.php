@@ -64,6 +64,8 @@ class CartController extends Controller
         $cartItems = json_decode(json_encode($cartItems), true);
         foreach ($cartItems as $item) {
             auth()->user()->bought()->attach($item['id']);
+            // Set the listing to inactive
+            Listing::where('id', $item['id'])->update(['active' => false]);
         }
 
         session()->forget('cart');

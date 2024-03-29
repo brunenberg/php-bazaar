@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if (!$listing->active)
+    <div class="mx-36 mt-20 bg-yellow-500 text-white p-6 rounded-lg shadow-md">
+        <p>{!!__('This listing is not active')!!}</p>
+    </div>
+@endif
+
 <div class="mx-36 mt-20">
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between">
@@ -14,7 +20,7 @@
                         <button type="submit" name="add_favorite" class="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"><i class="fas fa-heart text-xl"></i></button>
                     </form>
                 @endif
-                @if (Auth::check() && Auth::user()->user_type === 'gebruiker')
+                @if (Auth::check() && Auth::user()->user_type === 'gebruiker' && $listing->active)
                     <form action="{{route('listing/add-to-cart')}}" method="POST">
                         @csrf
                         <input type="hidden" name="listing_id" value="{{$listing->id}}">

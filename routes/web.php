@@ -46,6 +46,7 @@ Route::get('/listings', [ListingController::class, 'index'])->name('listings')->
 Route::get('/edit-listing/{id}', [ListingController::class, 'edit'])->name('edit-listing')->middleware('checkListingOwner');
 Route::put('/update-listing/{id}', [ListingController::class, 'update'])->name('update-listing')->middleware('checkListingOwner');
 Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing')->middleware('checkListingOwner');
+Route::put('/activate-listing/{id}', [ListingController::class, 'activate'])->name('activate-listing')->middleware('checkListingOwner');
 
 Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
