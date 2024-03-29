@@ -21,7 +21,7 @@
     </div>
     <form action="{{route('cart/checkout')}}" method="POST">
         @csrf
-        <button type="submit" class="col-span-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Afrekenen</button>
+        <button type="submit" id="checkout" class="col-span-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Afrekenen</button>
     </form>
     @else
     <p class="text-lg text-center">Je winkelwagen is leeg.</p>

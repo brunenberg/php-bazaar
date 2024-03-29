@@ -11,14 +11,14 @@
                     <form action="{{route('account/add-favorite')}}" method="POST">
                         @csrf
                         <input type="hidden" name="listing_id" value="{{$listing->id}}">
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"><i class="fas fa-heart text-xl"></i></button>
+                        <button type="submit" name="add_favorite" class="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300"><i class="fas fa-heart text-xl"></i></button>
                     </form>
                 @endif
                 @if (Auth::check() && Auth::user()->user_type === 'gebruiker')
                     <form action="{{route('listing/add-to-cart')}}" method="POST">
                         @csrf
                         <input type="hidden" name="listing_id" value="{{$listing->id}}">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"><i class="fas fa-shopping-cart text-xl"></i></button>
+                        <button type="submit" id="add_to_cart" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"><i class="fas fa-shopping-cart text-xl"></i></button>
                         </form>
                 @endif
             </div>
@@ -114,7 +114,7 @@
                 <label for="review" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{!!__('Review')!!}</label>
                 <textarea id="review" name="review" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""></textarea>
             </div>
-            <button type="submit" class="bg-blue-500 w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">{!!__('Post')!!}</button>
+            <button type="submit" id="submit_review" class="bg-blue-500 w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">{!!__('Post')!!}</button>
         </div>
 </div>
 @endif
