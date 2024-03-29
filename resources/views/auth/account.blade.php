@@ -9,6 +9,8 @@
     @include('account-page.zakelijke-verkoper')
 @elseif (auth()->user()->user_type === 'gebruiker')
     @include('account-page.gebruiker')
+@elseif (auth()->user()->user_type === 'particuliere_verkoper')
+    @include('account-page.particuliere-verkoper')
 @endif
 
 <div class="container" style="max-width: 400px;">

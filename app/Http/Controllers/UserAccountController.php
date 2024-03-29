@@ -19,12 +19,16 @@ class UserAccountController extends Controller
                 $company = Company::where('user_id', Auth::user()->id)->first();
                 $templates = Template::all();
                 $activeTemplates = $company->templates()->get();
+                $bids = $company->listings->map(function ($listing) {
+                    return $listing->bids->where('accepted', null);
+                })->flatten();
                 return view('auth.account', [
                     'user' => Auth::user(),
                     'company' => $company,
                     'templates' => $templates,
                     'activeTemplates' => $activeTemplates,
-                    'favorites' => $favorites
+                    'favorites' => $favorites,
+                    'bids' => $bids
 
                 ]);
             } else if (Auth::user()->user_type === 'gebruiker') {
@@ -35,6 +39,15 @@ class UserAccountController extends Controller
                     'user' => Auth::user(),
                     'favorites' => $favorites,
                     'purchases' => $purchases
+                ]);
+            } else if (Auth::user()->user_type === 'particuliere_verkoper'){
+                $bids = Auth::user()->listings->map(function ($listing) {
+                    return $listing->bids->where('accepted', null);
+                })->flatten();
+                return view('auth.account', [
+                    'user' => Auth::user(),
+                    'favorites' => $favorites,
+                    'bids' => $bids
                 ]);
             } else {
                 return view('auth.account', [

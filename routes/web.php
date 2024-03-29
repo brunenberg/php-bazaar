@@ -4,6 +4,7 @@ use App\Models\Company;
 use App\Models\Listing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
@@ -45,6 +46,7 @@ Route::get('/listings', [ListingController::class, 'index'])->name('listings')->
 Route::get('/edit-listing/{id}', [ListingController::class, 'edit'])->name('edit-listing')->middleware('checkListingOwner');
 Route::put('/update-listing/{id}', [ListingController::class, 'update'])->name('update-listing')->middleware('checkListingOwner');
 Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing')->middleware('checkListingOwner');
+Route::put('/activate-listing/{id}', [ListingController::class, 'activate'])->name('activate-listing')->middleware('checkListingOwner');
 
 Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
 Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
@@ -79,11 +81,15 @@ Route::post('/listing/review', [ListingController::class, 'addReview'])->name('l
 Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
 Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
 
+Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
+Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
+Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('auth');
 Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart')->middleware('auth');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove')->middleware('auth');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout')->middleware('auth');
 
 
+Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

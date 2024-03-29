@@ -18,11 +18,30 @@
 
     <div class="mt-4">
         <label for="type" class="block">Type:</label>
-        <select name="type" class="mt-1 p-2 border rounded-md w-full">
+        <select name="type" id="type" class="mt-1 p-2 border rounded-md w-full">
+            <option value="" {{ (old('type', $listing->type ?? '') == '') ? 'selected' : '' }} disabled>Selecteer een type</option>
+            {{-- Verkoop option --}}
             <option value="verkoop" {{ (old('type', $listing->type ?? '') == 'verkoop') ? 'selected' : '' }}>Verkoop</option>
             <option value="verhuur" {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'selected' : '' }}>Verhuur</option>
         </select>
     </div>
+    
+    <div class="mt-4" id="bidding_allowed_div" style="display: {{ (old('type', $listing->type ?? '') == 'verkoop') ? 'block' : 'none' }}">
+        <label for="bidding_allowed" class="block">Bieden toegestaan:</label>
+        <input name="bidding_allowed" id="bidding_allowed" type="checkbox" value="1" {{ (old('bidding_allowed', $listing->bidding_allowed ?? '') == '1') ? 'checked' : '' }}>
+    </div>
+    
+    <script>
+        document.getElementById('type').addEventListener('change', function() {
+            var biddingAllowedDiv = document.getElementById('bidding_allowed_div');
+            if (this.value === 'verkoop') {
+                biddingAllowedDiv.style.display = 'block';
+            } else {
+                biddingAllowedDiv.style.display = 'none';
+            }
+        });
+    </script>
+    
 
     <div class="mt-4">
         <label for="image" class="block">Afbeelding:</label>

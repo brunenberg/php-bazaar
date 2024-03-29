@@ -89,6 +89,8 @@
             @endforeach
         </div>
     </div>
+    
+    @include('components.bids')
 
     {{-- Show all contracts with accept en reject buttons --}}
     <div>

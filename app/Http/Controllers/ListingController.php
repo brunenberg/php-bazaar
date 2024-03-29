@@ -32,6 +32,7 @@ class ListingController extends Controller
             'description' => 'required',
             'type' => 'required|in:verkoop,verhuur',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bidding_allowed' => 'nullable|boolean'
         ]);
     
         $listingsCount = 0;
@@ -53,6 +54,7 @@ class ListingController extends Controller
         $listing->description = $request->description;
         $listing->type = $request->type;
         $listing->image = $imageName;
+        $listing->bidding_allowed = $request->bidding_allowed;
     
         if (auth()->user()->user_type === 'particuliere_verkoper') {
             $listing->user_id = auth()->id();
@@ -195,5 +197,14 @@ class ListingController extends Controller
     {
         $listings = Listing::where('company_id', $companyId)->get();
         return $listings;
+    }
+
+    // Activate listing
+    public function activate($id)
+    {
+        $listing = Listing::find($id);
+        $listing->active = true;
+        $listing->save();
+        return redirect()->back();
     }
 }
