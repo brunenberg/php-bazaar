@@ -63,7 +63,8 @@ class BidController extends Controller
             'bid_id' => 'required|exists:bids,id'
         ]);
         $bid = Bid::find($request->bid_id);
-        $bid->delete();
+        $bid->accepted = false;
+        $bid->save();
         return back()->with('success', 'Bid declined successfully.');
     }
 }
