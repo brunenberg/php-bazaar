@@ -12,7 +12,7 @@ class CreateListingTest extends DuskTestCase
     /**
      * A Dusk test example.
      */
-    public function testExample(): void
+    public function testCreateListing(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(3))

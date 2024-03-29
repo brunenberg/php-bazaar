@@ -11,7 +11,7 @@ class RegisterTest extends DuskTestCase
     /**
      * A Dusk test example.
      */
-    public function testExample(): void
+    public function testRegister(): void
     {
         $this->browse(function (Browser $first, Browser $second, Browser $third) {
             $first->visit('/register')
