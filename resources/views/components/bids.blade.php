@@ -34,6 +34,11 @@
                         </td>
                     </tr>
                 @endforeach
+                @empty($bids->items)
+                    <tr>
+                        <td colspan="5">{!!__('No bids found')!!}</td>
+                    </tr>
+                @endempty
             </tbody>
         </table>
     </div>

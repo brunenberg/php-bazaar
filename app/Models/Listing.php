@@ -5,7 +5,7 @@
     
     class Listing extends Model {
         
-        protected $fillable = ['title', 'description', 'tags'];
+        protected $fillable = ['title', 'description', 'bidding_allowed', 'image', 'company_id', 'type'];
         protected $table = 'listings';
 
         public function users()
@@ -28,6 +28,7 @@
         {
             return $this->hasMany(Bid::class);
         }
+
         
         public function bought()
         {

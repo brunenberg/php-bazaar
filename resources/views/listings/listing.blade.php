@@ -28,13 +28,13 @@
     </div>
 </div>
 
+@if($listing->bidding_allowed)
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
     <h2 class="font-bold text-2xl pb-3">{!!__('Bids')!!}</h2>
     <div class="bg-gray-100 p-5 rounded-lg">
         @foreach ($listing->bids->sortByDesc('bid') as $bid)
             <div class="flex flex-col justify-between items-center border-b pb-3 mb-3 bg-white rounded-md">
                 <p class="text-lg font-semibold">€{{$bid->bid}}</p>
-                {{-- <p class="text-sm">Geplaatst door: {{$bid->user->name}}</p> --}}
                 @if (Auth::check() && $bid->user_id === Auth::user()->id)
                     <form action="{{route('listing/delete-bid')}}" method="POST">
                         @csrf
@@ -50,15 +50,17 @@
                 <form action="{{route('listing/bid')}}" method="POST">
                     @csrf
                     <input type="hidden" name="listing_id" value="{{$listing->id}}">
-                    <label for="bid" class="block mb-2 font-semibold">Bieding toevoegen:</label>
+                    <label for="bid" class="block mb-2 font-semibold">Bod toevoegen:</label>
                     <input type="number" name="bid" id="bid" class="p-2 border rounded-md w-full" required>
                     <button type="submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{__('Place Bid')}}</button>
                 </form>
             </div>
+        @else
+            <p>{!!__('Please login to place a bid')!!}</p>
         @endif
     </div>
 </div>
-
+@endif
 
 
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
@@ -85,11 +87,11 @@
     </div>
 </div>
 
+
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
     <h2 class="font-bold text-2xl pb-3">{!!__('Share this listing')!!}</h2>
     <img src="{{$qrCode}}" alt="QR Code">
 </div>
-
 
 @if (auth()->check() && auth()->user()->user_type === 'gebruiker')
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">

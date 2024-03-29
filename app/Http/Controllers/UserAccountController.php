@@ -20,7 +20,7 @@ class UserAccountController extends Controller
                 $templates = Template::all();
                 $activeTemplates = $company->templates()->get();
                 $bids = $company->listings->map(function ($listing) {
-                    return $listing->bids;
+                    return $listing->bids->where('accepted', null);
                 })->flatten();
                 return view('auth.account', [
                     'user' => Auth::user(),
