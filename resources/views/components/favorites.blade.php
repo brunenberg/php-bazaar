@@ -12,7 +12,7 @@
                         <form action="{{route('account/remove-favorite')}}" method="POST">
                             @csrf
                             <input type="hidden" name="listing_id" value="{{$favorite->pivot->listing_id}}">
-                            <button type="submit" value="Verwijderen" class="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">{!!__('Delete')!!}</button>
+                            <button type="submit" name="remove_favorite" value="Verwijderen" class="bg-red-500 text-white px-4 py-2 rounded-lg w-full hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">{!!__('Delete')!!}</button>
                         </form>
                     </div>
                 </div>

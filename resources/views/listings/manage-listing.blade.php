@@ -29,7 +29,7 @@
         <input name="image" type="file" accept=".jpeg,.jpg,.png,.gif,.svg" class="mt-1 p-2 border rounded-md w-full">
     </div>
 
-    <button type="submit" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Opslaan</button>
+    <button type="submit" id="save_listing" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Opslaan</button>
 </form>
 
 @endsection

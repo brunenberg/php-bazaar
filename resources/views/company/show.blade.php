@@ -7,7 +7,7 @@
         <form action="{{route('company/download-contract')}}" method="POST">
             @csrf
             <input type="hidden" name="company_id" value="{{$company->id}}">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download</button>
+            <button type="submit" id="downloadContract" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download</button>
         </form>
 
         <form action="{{route('company/upload-contract')}}" method="POST" enctype="multipart/form-data">
