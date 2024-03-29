@@ -54,6 +54,7 @@
     "Bid": "Bod",
     "Listing": "Advertentie",
     "Date": "Datum",
-    "Actions": "Acties"
-
+    "Actions": "Acties",
+    "Purchase": "Aankoop",
+    "Purchases": "Aankopen"
 }

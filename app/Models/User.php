@@ -22,6 +22,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Listing::class, 'user_favorites')->withPivot('user_id', 'listing_id');
     }
 
+    public function bought()
+    {
+        return $this->belongsToMany(Listing::class, 'user_bought')->withPivot('user_id', 'listing_id', 'created_at');
+    }
+    
     public function listings()
     {
         return $this->hasMany('App\Models\Listing');

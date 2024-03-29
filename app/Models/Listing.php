@@ -28,6 +28,11 @@
         {
             return $this->hasMany(Bid::class);
         }
+        
+        public function bought()
+        {
+            return $this->belongsToMany(User::class, 'user_bought')->withPivot('user_id', 'listing_id');
+        }
 
     }
 

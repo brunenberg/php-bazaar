@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\CompanyController;
@@ -82,6 +83,11 @@ Route::post('/company/delete-review', [CompanyController::class, 'deleteReview']
 Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
 Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
 Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('auth');
+Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart')->middleware('auth');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove')->middleware('auth');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout')->middleware('auth');
+
 
 Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
 // Deze route moet onderaan
