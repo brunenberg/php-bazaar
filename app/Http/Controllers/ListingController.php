@@ -207,4 +207,13 @@ class ListingController extends Controller
         $listing->save();
         return redirect()->back();
     }
+
+    // Deactivate listing
+    public function deactivate($id)
+    {
+        $listing = Listing::find($id);
+        $listing->active = false;
+        $listing->save();
+        return redirect()->back();
+    }
 }
