@@ -29,7 +29,19 @@
                 @endif
             </div>
         </div>
-        <img src="{{url('/images/'.$listing->image)}}" alt="Advertentie foto" class="max-h-96 mt-4">
+        <div class="flex flex-col items-start">
+            <img src="{{url('/images/'.$listing->image)}}" alt="Advertentie foto" class="max-h-96 mt-4">
+            <div class="bg-white rounded-lg shadow-md p-6 mt-5">
+                <p><i class="fa-regular fa-user"></i>
+                @if (!$listing->company_id == null)
+                    <a href="{{ route('page.show', $listing->company->slug) }}">{{$listing->company->name}}</a>
+                @else
+                    {{$listing->user->email}}
+                @endif
+                </p>
+            </div>
+        </div>
+        
         <p class="pt-5">{{$listing->description}}</p>
     </div>
 </div>

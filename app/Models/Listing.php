@@ -35,6 +35,10 @@
             return $this->belongsToMany(User::class, 'user_bought')->withPivot('user_id', 'listing_id');
         }
 
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
     }
 
 ?>
