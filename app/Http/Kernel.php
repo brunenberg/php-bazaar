@@ -70,6 +70,8 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'checkUserType' => \App\Http\Middleware\CheckUserType::class,
         'checkListingOwner' => \App\Http\Middleware\CheckListingOwner::class,
+        'normalUser' => \App\Http\Middleware\NormalUserMiddleware::class,
+        'company' => \App\Http\Middleware\CompanyMiddleware::class,
     ];
 
     

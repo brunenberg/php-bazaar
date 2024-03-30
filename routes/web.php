@@ -36,7 +36,7 @@ Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout'
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
 
 // Middleware group for users with company
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['company'])->group(function () {
     Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
     Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
     Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
@@ -94,7 +94,7 @@ Route::middleware(['admin'])->group(function () {
 // Middleware group for users normal users (logged in)
 Route::middleware(['normalUser'])->group(function () {
     Route::get('/cart', [CartController::class, 'cart'])->name('cart');
-    Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart'));
+    Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart');
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout');
 }); 
