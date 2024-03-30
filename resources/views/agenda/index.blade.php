@@ -26,7 +26,7 @@
                     @if (array_key_exists($day, $boughtListingsSale))
                         @foreach ($boughtListingsSale[$day] as $listing)
                             <div class="event bg-blue-100 p-2 rounded-lg mb-2">
-                                <div class="title">Verkoop:</div>
+                                <div class="title">Aankoop:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -50,7 +50,7 @@
                     @if (array_key_exists($day, $returnDates))
                         @foreach ($returnDates[$day] as $listing)
                             <div class="event bg-purple-100 p-2 rounded-lg mb-2">
-                                <div class="title">Ontvangen:</div>
+                                <div class="title">Terugbrengen verhuur:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
