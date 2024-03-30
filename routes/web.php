@@ -35,20 +35,22 @@ Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
 
-Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf'); // Deze moet ff naar gekeken worden of alleen admin deze nodig heeft of ook zakelijke gebruiker
+// Middleware group for users with company
+Route::middleware(['auth'])->group(function () {
+    Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
+    Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
+    Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
+    Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
+    Route::post('/templates/order-down', [CompanyController::class, 'orderDown'])->name('templates.orderDown');
+    Route::post('/contract/accept', [CompanyController::class, 'acceptContract'])->name('contract/accept');
+    Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->name('contract/reject');
+    Route::get('/get_personal_access_token', function () {
+        $user = auth()->user(); /** @var User $user */
+        return $user->createToken('token')->plainTextToken; 
+    })->middleware('auth');
+});
 
-// TODO: Company routes, add middleware group
-Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
-Route::post('/add-template', [CompanyController::class, 'addTemplate'])->name('add-template');
-Route::post('/remove-template', [CompanyController::class, 'removeTemplate'])->name('remove-template');
-Route::post('/templates/order-up', [CompanyController::class, 'orderUp'])->name('templates.orderUp');
-Route::post('/templates/order-down', [CompanyController::class, 'orderDown'])->name('templates.orderDown');
-Route::post('/contract/accept', [CompanyController::class, 'acceptContract'])->name('contract/accept');
-Route::post('/contract/reject', [CompanyController::class, 'rejectContract'])->name('contract/reject');
-Route::get('/get_personal_access_token', function () {
-    $user = auth()->user(); /** @var User $user */
-    return $user->createToken('token')->plainTextToken; 
-})->middleware('auth');
+Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf')->middleware('auth');
 
 // Middleware group for routes where user has to be signed in
 Route::middleware(['auth'])->group(function () {
@@ -89,11 +91,13 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/company/upload-contract', [CompanyController::class, 'uploadContract'])->name('company/upload-contract');
 });
 
-// TODO: Routes alleen voor gebruiker account
-Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('auth');
-Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart')->middleware('auth');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove')->middleware('auth');
-Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout')->middleware('auth');
+// Middleware group for users normal users (logged in)
+Route::middleware(['normalUser'])->group(function () {
+    Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+    Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name('listing/add-to-cart'));
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout');
+}); 
 
 // This route has to be last
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');
