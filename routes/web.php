@@ -36,6 +36,8 @@ Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 
+Route::get('/search', [HomeController::class, 'search'])->name('search');
+
 Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf');
 
 Route::post('/update-info', [CompanyController::class, 'updateInfo'])->name('update-info');
