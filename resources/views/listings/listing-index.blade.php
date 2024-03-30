@@ -23,6 +23,12 @@
                     @method('PUT')
                     <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Activate</button>
                 </form>
+                @else
+                <form action="{{ route('deactivate-listing', $listing->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Deactivate</button>
+                </form>
                 @endif
             </div>
         </div>
