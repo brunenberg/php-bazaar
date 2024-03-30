@@ -8,6 +8,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ListingController;
@@ -92,5 +93,7 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/c
 
 
 Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
+
+Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
 // Deze route moet onderaan
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('bidding_allowed')->default(false);
             $table->string('image');
             $table->boolean('active')->default(true);
+            $table->integer('rental_days')->nullable();
             $table->timestamps();
         });
     }

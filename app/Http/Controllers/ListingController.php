@@ -32,7 +32,8 @@ class ListingController extends Controller
             'description' => 'required',
             'type' => 'required|in:verkoop,verhuur',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'bidding_allowed' => 'nullable|boolean'
+            'bidding_allowed' => 'nullable|boolean',
+            'rental_days' => 'nullable|integer',
         ]);
     
         $listingsCount = 0;
@@ -54,7 +55,8 @@ class ListingController extends Controller
         $listing->description = $request->description;
         $listing->type = $request->type;
         $listing->image = $imageName;
-        $listing->bidding_allowed = $request->bidding_allowed;
+        $listing->bidding_allowed = $request->input('bidding_allowed', null);
+        $listing->rental_days = $request->input('rental_days', null);
     
         if (auth()->user()->user_type === 'particuliere_verkoper') {
             $listing->user_id = auth()->id();
@@ -93,12 +95,22 @@ class ListingController extends Controller
             'description' => 'required',
             'type' => 'required|in:verkoop,verhuur', // Add this line
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bidding_allowed' => 'nullable|boolean',
+            'rental_days' => 'nullable|integer',
         ]);
     
         if ($request->hasFile('image')) {
             $imageName = time().'.'.$request->image->extension();  
             $request->image->move(public_path('images'), $imageName);
             $listing->image = $imageName;
+        }
+
+        if($request->bidding_allowed){
+            $listing->bidding_allowed = $request->bidding_allowed;
+        }
+
+        if($request->rental_days){
+            $listing->rental_days = $request->rental_days;
         }
     
         $listing->title = $request->title;

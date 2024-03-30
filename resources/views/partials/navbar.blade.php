@@ -25,6 +25,11 @@
           <a href="/companies" class="block py-2 px-3 text-{{ Request::is('companies') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">Bedrijven</a>
         </li>
         @endif
+        @if (auth()->check())
+        <li>
+          <a href="/agenda" class="block py-2 px-3 text-{{ Request::is('agenda') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">Agenda</a>
+        </li>
+        @endif
         <li>
           <a href="/account" class="block py-2 px-3 text-{{ Request::is('account') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">{!!__('My account')!!}</a>
         </li>
