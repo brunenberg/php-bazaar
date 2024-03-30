@@ -50,7 +50,7 @@ Route::get('/get_personal_access_token', function () {
     return $user->createToken('token')->plainTextToken; 
 })->middleware('auth');
 
-// In deze groep zitten alle routes waarvoor je ingelogd moet zijn
+// Middleware group for routes where user has to be signed in
 Route::middleware(['auth'])->group(function () {
     Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
     Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
 });
 
-// In deze groep zitten alle routes waar je een verkoper voor moet zijn (LET OP: Particulier of zakelijk)
+// Middleware group for users that need to have a seller account
 Route::middleware(['checkUserType'])->group(function () {
     Route::get('/create-listing', [ListingController::class, 'create'])->name('create-listing-form');
     Route::post('/create-listing', [ListingController::class, 'store'])->name('create-listing');
@@ -72,7 +72,7 @@ Route::middleware(['checkUserType'])->group(function () {
     Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
 });
 
-// In deze groep zitten alle routes waar je eigenaar van de listing moet zijn
+// Middleware group for users that need to be owner of listing
 Route::middleware(['checkListingOwner'])->group(function () {
     Route::get('/edit-listing/{id}', [ListingController::class, 'edit'])->name('edit-listing');
     Route::put('/update-listing/{id}', [ListingController::class, 'update'])->name('update-listing');
@@ -81,7 +81,7 @@ Route::middleware(['checkListingOwner'])->group(function () {
     Route::put('/deactivate-listing/{id}', [ListingController::class, 'deactivate'])->name('deactivate-listing');
 });
 
-// In deze groep zitten alle routes waar alleen admins toegang tot mogen hebben
+// Middleware group for users that need to be admin
 Route::middleware(['admin'])->group(function () {
     Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
     Route::get('/companies', [CompanyController::class, 'allCompanies'])->name('companies');
@@ -95,5 +95,5 @@ Route::post('/listing/add-to-cart', [CartController::class, 'addToCart'])->name(
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart/remove')->middleware('auth');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart/checkout')->middleware('auth');
 
-// Deze route moet onderaan
+// This route has to be last
 Route::get('/company/{slug}', [CompanyController::class, 'show'])->name('page.show');
