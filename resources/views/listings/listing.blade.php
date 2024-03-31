@@ -13,7 +13,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
-                <p class="text-2xl font-semibold text-gray-900 dark:text-white">${{$listing->price}}</p>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">€{{$listing->price}}</p>
             </div>
             <div class="flex justify-end [&>form]:ml-2">
                 @if (Auth::check())
