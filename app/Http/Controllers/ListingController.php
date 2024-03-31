@@ -249,6 +249,7 @@ class ListingController extends Controller
         $validatedData = $request->validate([
             'listing_id' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'user_id' => 'required|numeric'
         ]);
 
         $listing = Listing::find($validatedData['listing_id']);
@@ -262,7 +263,9 @@ class ListingController extends Controller
         }
         $listing->save();
 
-        // Save the image
+        // Set returned to true in user_bought pivot table
+        $listing->bought()->where('user_id', $validatedData['user_id'])->updateExistingPivot($validatedData['user_id'], ['returned' => true]);
+
         $imageName = $listing->id . '.'.$request->image->extension();
         $request->image->move(public_path('images/returns'), $imageName);
 

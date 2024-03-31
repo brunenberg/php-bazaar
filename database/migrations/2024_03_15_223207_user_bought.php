@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users'); 
             $table->foreignId('listing_id')->constrained('listings');
             $table->primary(['user_id', 'listing_id']);
+            $table->boolean('returned')->default(false);
             $table->timestamps();
         });
     }

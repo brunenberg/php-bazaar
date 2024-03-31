@@ -50,21 +50,26 @@
                         @foreach ($returnDates[$day] as $listing)
                             <div class="event bg-purple-100 p-2 rounded-lg mb-2">
                                 <div class="title">Einde verhuur:</div>
-                                <div class="title">{{ $listing->title }}</div>
+                                <div class="title">{{ $listing['listing']->title }}</div>
                                 @php
                                     $dialogId = "return-dialog-$day";
                                 @endphp
+                                @if (!$listing['listing']->returned($listing['user_id']))
                                 <dialog id="{{ $dialogId }}" class="p-10 rounded-lg">
                                     <h3 class="font-bold text-xl mb-5">Upload photo for return:</h3>
                                     <form action="{{ route('return') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="listing_id" value="{{ $listing->id }}">
+                                        <input type="hidden" name="user_id" value="{{ $listing['user_id'] }}">
+                                        <input type="hidden" name="listing_id" value="{{ $listing['listing']->id }}">
                                         <input type="file" name="image" id="return-image-{{ $day }}" accept="image/*">
                                         <button class="btn btn-primary px-2 mt-1 bg-blue-300 rounded-lg" onclick="closeDialog('{{ $dialogId }}')">Upload</button>
                                     </form>
                                     <button class="btn btn-primary px-2 mt-1 bg-red-300 rounded-lg mt-10" onclick="document.getElementById('{{ $dialogId }}').close()">Close</button>
                                 </dialog>
                                 <button class="btn btn-primary px-2 mt-1 bg-blue-300 rounded-lg" onclick="openDialog('{{ $dialogId }}')">Return</button>
+                                @else
+                                <p class="px-2 mt-1 bg-green-300 rounded-lg">Returned✔</p>
+                                @endif
                             </div>
                         @endforeach
                     @endif

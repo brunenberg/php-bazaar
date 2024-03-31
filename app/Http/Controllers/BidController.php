@@ -11,9 +11,11 @@ class BidController extends Controller
     public function addBid(Request $request)
     {
         $listing = Listing::find($request->listing_id);
-         if ($listing->user_id == auth()->id() || ($listing->company_id && $listing->company_id == auth()->user()->company->id)) {
-             return back()->with('error', 'You cannot place a bid on your own listing.');
-         }
+        $user = auth()->user();
+
+        if ($user && ($listing->user_id == $user->id || ($listing->company_id && $user->company && $listing->company_id == $user->company->id))) {
+            return back()->with('error', 'You cannot place a bid on your own listing.');
+        }
 
         // Check if user has placed 3 bids on whole platform
         if (auth()->user()->bids->count() >= 4) {
@@ -31,7 +33,7 @@ class BidController extends Controller
         $bid->listing_id = $request->listing_id;
         $bid->user_id = auth()->id();
         $bid->save();
-        
+
         return back()->with('success', 'Bid added successfully.');
     }
 
