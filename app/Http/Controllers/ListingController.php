@@ -33,7 +33,7 @@ class ListingController extends Controller
             'type' => 'required|in:verkoop,verhuur',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
-            'wear_speed' => 'nullable|string',
+            'wear_speed' => $request->type == 'verhuur' ? 'required|string' : 'nullable',
             'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
             'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         ]);
@@ -111,6 +111,7 @@ class ListingController extends Controller
             'bidding_allowed' => 'nullable|boolean',
             'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
             'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'wear_speed' => $request->type == 'verhuur' ? 'required|string' : 'nullable',
         ]);
     
         if ($request->hasFile('image')) {
