@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('expires_in_days')->default('7');
             $table->integer('condition')->nullable();
             $table->string('wear_speed')->nullable();
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }

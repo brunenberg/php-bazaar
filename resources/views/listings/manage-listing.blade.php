@@ -63,6 +63,10 @@
         });
     </script>
     
+    <div class="mt-4">
+        <label for="price" class="block">Prijs:</label>
+        <input name="price" type="number" step="any" value="{{ old('price', $listing->price ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
+    </div>
 
     <div class="mt-4">
         <label for="image" class="block">Afbeelding:</label>

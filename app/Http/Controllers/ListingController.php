@@ -33,8 +33,9 @@ class ListingController extends Controller
             'type' => 'required|in:verkoop,verhuur',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
-            'rental_days' => 'nullable|integer',
             'wear_speed' => 'nullable|string',
+            'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         ]);
     
         $listingsCount = 0;
@@ -56,12 +57,18 @@ class ListingController extends Controller
         $listing->description = $request->description;
         $listing->type = $request->type;
         $listing->image = $imageName;
-        $listing->bidding_allowed = $request->input('bidding_allowed', null);
-        $listing->rental_days = $request->input('rental_days', null);
-
         if($request->wear_speed){
             $listing->wear_speed = $request->wear_speed;
             $listing->condition = 100;
+        }
+        $listing->price = $request->price;
+
+        if ($request->type == 'verkoop') {
+            $listing->bidding_allowed = $request->filled('bidding_allowed');
+            $listing->rental_days = null;
+        } else if ($request->type == 'verhuur') {
+            $listing->bidding_allowed = false;
+            $listing->rental_days = $request->rental_days;
         }
     
         if (auth()->user()->user_type === 'particuliere_verkoper') {
@@ -99,10 +106,11 @@ class ListingController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'type' => 'required|in:verkoop,verhuur', // Add this line
+            'type' => 'required|in:verkoop,verhuur',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
-            'rental_days' => 'nullable|integer',
+            'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
         ]);
     
         if ($request->hasFile('image')) {
@@ -111,11 +119,11 @@ class ListingController extends Controller
             $listing->image = $imageName;
         }
 
-        if($request->bidding_allowed){
-            $listing->bidding_allowed = $request->bidding_allowed;
-        }
-
-        if($request->rental_days){
+        if ($request->type == 'verkoop') {
+            $listing->bidding_allowed = $request->filled('bidding_allowed');
+            $listing->rental_days = null;
+        } else if ($request->type == 'verhuur') {
+            $listing->bidding_allowed = false;
             $listing->rental_days = $request->rental_days;
         }
 
@@ -129,10 +137,11 @@ class ListingController extends Controller
         $listing->title = $request->title;
         $listing->description = $request->description;
         $listing->type = $request->type;
+        $listing->price = $request->price;
         $listing->save();
     
         return redirect()->route('listings')->with('success', 'Listing updated successfully.');
-    }    
+    }
     
     public function destroy($id)
     {
