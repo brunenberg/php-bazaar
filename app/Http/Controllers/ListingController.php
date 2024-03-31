@@ -89,43 +89,41 @@ class ListingController extends Controller
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt',
         ]);
-
+    
         $file = fopen($request->file('csv_file'), 'r');
-
+    
         while (($row = fgetcsv($file)) !== false) {
-            // Assuming CSV structure: title,description,bidding_allowed,image,company_id,type,price
             $listingData = [
                 'type' => $row[0],
                 'title' => $row[1],
                 'description' => $row[2],
                 'image' => $row[3],
-                'type' => $row[5],
-                'price' => $row[6],
-                'bidding_allowed' => $row[2] === 'true' ? true : false,
-                
+                'price' => trim($row[4]),
+                'bidding_allowed' => $row[5] === 'true' ? true : false,
+                'rental_days' => $row[6],
             ];
-
-            // Validate the listing data...
+    
             $validator = Validator::make($listingData, [
+                'type' => 'required|in:sale,rental',
                 'title' => 'required',
                 'description' => 'required',
-                'bidding_allowed' => 'nullable|boolean',
                 'image' => 'required|string',
-                'type' => 'required|in:verkoop,verhuur',
                 'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+                'bidding_allowed' => 'nullable|boolean',
+                'rental_days' => $listingData['type'] == 'rental' ? 'required|integer' : 'nullable',
             ]);
-
+    
             if ($validator->fails()) {
                 return redirect()->back()->withInput()->withErrors($validator);
             }
-
-            Listing::create($listingData);
+    
+            $this->createListing($listingData);
         }
-
+    
         fclose($file);
-
+    
         return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
-    }
+    }    
 
 
     public function edit($id)
