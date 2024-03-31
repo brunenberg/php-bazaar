@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('listing_id')->constrained('listings');
             $table->primary(['user_id', 'listing_id']);
             $table->boolean('returned')->default(false);
+            $table->string('return_image')->nullable();
             $table->timestamps();
         });
     }
