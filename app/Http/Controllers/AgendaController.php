@@ -77,6 +77,15 @@ class AgendaController extends Controller
             }
         }
 
-        return view('agenda.index', compact('currentMonth', 'nextMonth', 'previousMonth', 'days', 'rentalListings', 'soldListings', 'currentYear', 'returnDates', 'boughtListingsRental', 'boughtListingsSale'));
+        $listingDueDates = [];
+        foreach ($listings as $listing) {
+            $expirationDate = date('d', strtotime('+' . $listing->expires_in_days . ' days', strtotime($listing->created_at)));
+            if (date('m', strtotime('+' . $listing->expires_in_days . ' days', strtotime($listing->created_at))) == date('m', strtotime($currentMonth . ' ' . $currentYear))) {
+                $listingDueDates[ltrim($expirationDate, '0')][] = $listing->title;
+            }
+        }
+
+
+        return view('agenda.index', compact('currentMonth', 'nextMonth', 'previousMonth', 'days', 'rentalListings', 'soldListings', 'currentYear', 'returnDates', 'boughtListingsRental', 'boughtListingsSale', 'listingDueDates'));
     }
 }

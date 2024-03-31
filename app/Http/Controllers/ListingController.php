@@ -216,6 +216,8 @@ class ListingController extends Controller
     {
         $listing = Listing::find($id);
         $listing->active = true;
+        $listing->expires_in_days = 7;
+        $listing->created_at = now();
         $listing->save();
         return redirect()->back();
     }
