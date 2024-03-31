@@ -11,7 +11,10 @@
 <div class="mx-36 mt-20">
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between">
-            <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
+            <div>
+                <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">${{$listing->price}}</p>
+            </div>
             <div class="flex justify-end [&>form]:ml-2">
                 @if (Auth::check())
                     <form action="{{route('account/add-favorite')}}" method="POST">
