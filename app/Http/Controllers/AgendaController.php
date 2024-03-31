@@ -55,7 +55,7 @@ class AgendaController extends Controller
                 $rentalDays = $listing->rental_days;
                 $returnDate = date('d', strtotime('+' . $rentalDays . ' days', $boughtDate));
                 if (date('m', strtotime('+' . $rentalDays . ' days', $boughtDate)) == date('m', strtotime($currentMonth . ' ' . $currentYear))) {
-                    $returnDates[ltrim($returnDate, '0')][] = $listing->title;
+                    $returnDates[ltrim($returnDate, '0')][] = $listing;
                 }
 
                 if (date('m', strtotime($listing->pivot->created_at)) == date('m', strtotime($currentMonth . ' ' . $currentYear))) {
@@ -71,7 +71,7 @@ class AgendaController extends Controller
                     $rentalDays = $listing->rental_days;
                     $returnDate = date('d', strtotime('+' . $rentalDays . ' days', $boughtDate));
                     if (date('m', strtotime('+' . $rentalDays . ' days', $boughtDate)) == date('m', strtotime($currentMonth . ' ' . $currentYear))) {
-                        $returnDates[ltrim($returnDate, '0')][] = $listing->title;
+                        $returnDates[ltrim($returnDate, '0')][] = $listing;
                     }
                 }
             }

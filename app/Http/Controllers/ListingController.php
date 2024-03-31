@@ -34,6 +34,7 @@ class ListingController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
             'rental_days' => 'nullable|integer',
+            'wear_speed' => 'nullable|string',
         ]);
     
         $listingsCount = 0;
@@ -57,6 +58,11 @@ class ListingController extends Controller
         $listing->image = $imageName;
         $listing->bidding_allowed = $request->input('bidding_allowed', null);
         $listing->rental_days = $request->input('rental_days', null);
+
+        if($request->wear_speed){
+            $listing->wear_speed = $request->wear_speed;
+            $listing->condition = 100;
+        }
     
         if (auth()->user()->user_type === 'particuliere_verkoper') {
             $listing->user_id = auth()->id();
@@ -112,10 +118,17 @@ class ListingController extends Controller
         if($request->rental_days){
             $listing->rental_days = $request->rental_days;
         }
+
+        if($request->wear_speed){
+            $listing->wear_speed = $request->wear_speed;
+            if($listing->condition == null){
+                $listing->condition = 100;
+            }
+        }
     
         $listing->title = $request->title;
         $listing->description = $request->description;
-        $listing->type = $request->type; // Add this line
+        $listing->type = $request->type;
         $listing->save();
     
         return redirect()->route('listings')->with('success', 'Listing updated successfully.');
@@ -228,6 +241,31 @@ class ListingController extends Controller
         $listing = Listing::find($id);
         $listing->active = false;
         $listing->save();
+        return redirect()->back();
+    }
+
+    public function return(Request $request)
+    {
+        $validatedData = $request->validate([
+            'listing_id' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $listing = Listing::find($validatedData['listing_id']);
+
+        if($listing->wear_speed == 'slow'){
+            $listing->condition -= 5;
+        } else if($listing->wear_speed == 'normal'){
+            $listing->condition -= 10;
+        } else if($listing->wear_speed == 'fast'){
+            $listing->condition -= 15;
+        }
+        $listing->save();
+
+        // Save the image
+        $imageName = $listing->id . '.'.$request->image->extension();
+        $request->image->move(public_path('images/returns'), $imageName);
+
         return redirect()->back();
     }
 }
