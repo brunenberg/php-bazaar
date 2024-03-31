@@ -8,6 +8,7 @@ use App\Http\Controllers\BidController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ListingController;
@@ -63,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/company/delete-review', [CompanyController::class, 'deleteReview'])->name('company/delete-review');
     Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
     Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
+    Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
 });
 
 // Middleware group for users that need to have a seller account

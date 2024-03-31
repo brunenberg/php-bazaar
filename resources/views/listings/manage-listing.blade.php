@@ -30,14 +30,27 @@
         <label for="bidding_allowed" class="block">Bieden toegestaan:</label>
         <input name="bidding_allowed" id="bidding_allowed" type="checkbox" value="1" {{ (old('bidding_allowed', $listing->bidding_allowed ?? '') == '1') ? 'checked' : '' }}>
     </div>
-    
+
+    <div class="mt-4" id="rental_days_div" style="display: {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'block' : 'none' }}">
+        <label for="rental_days" class="block">Verhuurperiode:</label>
+        <input name="rental_days" type="number" value="{{ old('rental_days', $listing->rental_days ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
+    </div>
+
     <script>
         document.getElementById('type').addEventListener('change', function() {
             var biddingAllowedDiv = document.getElementById('bidding_allowed_div');
+            var rentalDaysDiv = document.getElementById('rental_days_div');
             if (this.value === 'verkoop') {
                 biddingAllowedDiv.style.display = 'block';
             } else {
                 biddingAllowedDiv.style.display = 'none';
+            }
+
+            if (this.value === 'verhuur') {
+                document.getElementById('bidding_allowed').checked = false;
+                rentalDaysDiv.style.display = 'block';
+            } else {
+                rentalDaysDiv.style.display = 'none';
             }
         });
     </script>
