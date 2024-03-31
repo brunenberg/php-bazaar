@@ -4,6 +4,13 @@
 <div class="mt-4 container mx-auto">
     <h1 class="text-2xl font-bold mb-4">Your Listings</h1>
     <a href="{{ route('create-listing-form') }}" id="create_new" class="mt-4 inline-block px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Create New Listing</a>
+    <form action="{{ route('upload-csv') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="csv_file" accept=".csv">
+        <button type="submit" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Upload CSV</button>
+    </form>
+    <a href="{{ asset('pdfs/listings_documentation_' . auth()->user()->language . '.pdf') }}" download class="mt-4 inline-block px-4 py-2 bg-blue-200 text-black rounded-md hover:bg-blue-300">Download CSV Documentation</a>
+    <a href="{{ asset('csvs/listings_example_' . auth()->user()->language . '.csv') }}" download class="mt-4 ml-2 inline-block px-4 py-2 bg-blue-200 text-black rounded-md hover:bg-blue-300">Download CSV Example</a>
     @if($listings)
         @foreach($listings as $listing)
         <div class="mt-4 p-4 border rounded-md">

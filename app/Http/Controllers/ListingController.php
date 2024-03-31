@@ -6,6 +6,7 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ListingController extends Controller
 {
@@ -51,31 +52,81 @@ class ListingController extends Controller
         $imageName = time().'.'.$request->image->extension();  
         $request->image->move(public_path('images'), $imageName);
     
-        $listing = new Listing;
-        $listing->title = $request->title;
-        $listing->description = $request->description;
-        $listing->type = $request->type;
-        $listing->image = $imageName;
-        $listing->price = $request->price;
-
-        if ($request->type == 'verkoop') {
-            $listing->bidding_allowed = $request->filled('bidding_allowed');
-            $listing->rental_days = null;
-        } else if ($request->type == 'verhuur') {
-            $listing->bidding_allowed = false;
-            $listing->rental_days = $request->rental_days;
-        }
+        $listingData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'type' => $request->type,
+            'image' => $imageName,
+            'price' => $request->price,
+            'bidding_allowed' => $request->filled('bidding_allowed'),
+            'rental_days' => $request->type == 'verhuur' ? $request->rental_days : null,
+            'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
+            'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
+        ];
     
-        if (auth()->user()->user_type === 'particuliere_verkoper') {
-            $listing->user_id = auth()->id();
-        } else if (auth()->user()->user_type === 'zakelijke_verkoper') {
-            $listing->company_id = auth()->user()->company->id;
-        }
-    
-        $listing->save();
+        $this->createListing($listingData);
     
         return redirect()->route('listings')->with('success', 'You have successfully created a listing.');
     }
+    
+    private function createListing($data)
+    {
+        $listing = new Listing;
+        $listing->title = $data['title'];
+        $listing->description = $data['description'];
+        $listing->type = $data['type'];
+        $listing->image = $data['image'];
+        $listing->price = $data['price'];
+        $listing->bidding_allowed = $data['bidding_allowed'];
+        $listing->rental_days = $data['rental_days'];
+        $listing->user_id = $data['user_id'];
+        $listing->company_id = $data['company_id'];
+        $listing->save();
+    }
+
+    public function uploadCsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt',
+        ]);
+
+        $file = fopen($request->file('csv_file'), 'r');
+
+        while (($row = fgetcsv($file)) !== false) {
+            // Assuming CSV structure: title,description,bidding_allowed,image,company_id,type,price
+            $listingData = [
+                'type' => $row[0],
+                'title' => $row[1],
+                'description' => $row[2],
+                'image' => $row[3],
+                'type' => $row[5],
+                'price' => $row[6],
+                'bidding_allowed' => $row[2] === 'true' ? true : false,
+                
+            ];
+
+            // Validate the listing data...
+            $validator = Validator::make($listingData, [
+                'title' => 'required',
+                'description' => 'required',
+                'bidding_allowed' => 'nullable|boolean',
+                'image' => 'required|string',
+                'type' => 'required|in:verkoop,verhuur',
+                'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator);
+            }
+
+            Listing::create($listingData);
+        }
+
+        fclose($file);
+
+        return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
+    }
+
 
     public function edit($id)
     {

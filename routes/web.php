@@ -74,6 +74,7 @@ Route::middleware(['checkUserType'])->group(function () {
     Route::get('/listings', [ListingController::class, 'index'])->name('listings');
     Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
     Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
+    Route::post('/upload-csv', [ListingController::class, 'uploadCsv'])->name('upload-csv');
 });
 
 // Middleware group for users that need to be owner of listing
