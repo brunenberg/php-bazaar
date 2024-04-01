@@ -52,8 +52,6 @@ Route::middleware(['company'])->group(function () {
     })->middleware('auth');
 });
 
-Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf')->middleware('auth');
-
 // Middleware group for routes where user has to be signed in
 Route::middleware(['auth'])->group(function () {
     Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
