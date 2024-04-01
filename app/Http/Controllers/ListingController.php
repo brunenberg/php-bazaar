@@ -251,6 +251,8 @@ class ListingController extends Controller
         // Delete the associated user_bought records
         $listing->bought()->detach();
     
+        $listing->bids()->delete();
+
         $listing->delete();
     
         return redirect()->route('listings')->with('success', __('messages.listing_deleted'));
