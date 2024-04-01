@@ -72,13 +72,13 @@
                 <form action="{{route('listing/bid')}}" method="POST">
                     @csrf
                     <input type="hidden" name="listing_id" value="{{$listing->id}}">
-                    <label for="bid" class="block mb-2 font-semibold">Bod toevoegen:</label>
+                    <label for="bid" class="block mb-2 font-semibold">{!!__('Bid amount')!!}:</label>
                     <input type="number" name="bid" id="bid" class="p-2 border rounded-md w-full" required>
                     <button type="submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{__('Place Bid')}}</button>
                 </form>
             </div>
         @else
-            <p>{!!__('Please login to place a bid')!!}</p>
+            <p>{!!__('Please log in to place a bid')!!}.</p>
         @endif
     </div>
 </div>
@@ -125,11 +125,11 @@
             <div>
                 <label for="rating" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{!!__('Rating')!!}</label>
                 <select id="rating" name="rating" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1">{!!__('1')!!}</option>
+                    <option value="2">{!!__('2')!!}</option>
+                    <option value="3">{!!__('3')!!}</option>
+                    <option value="4">{!!__('4')!!}</option>
+                    <option value="5">{!!__('5')!!}</option>
                 </select>
             </div>
             <div>

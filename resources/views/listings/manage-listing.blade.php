@@ -7,32 +7,32 @@
         @method('PUT')
     @endif
     <div class="mt-4">
-        <label for="title" class="block">Titel:</label>
+        <label for="title" class="block">{!!__('Title')!!}:</label>
         <input name="title" type="text" value="{{ old('title', $listing->title ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
     </div>
 
     <div class="mt-4">
-        <label for="description" class="block">Beschrijving:</label>
+        <label for="description" class="block">{!!__('Description')!!}:</label>
         <textarea name="description" class="mt-1 p-2 border rounded-md w-full h-24">{{ old('description', $listing->description ?? '') }}</textarea>
     </div>
 
     <div class="mt-4">
-        <label for="type" class="block">Type:</label>
+        <label for="type" class="block">{!!__('Type')!!}:</label>
         <select name="type" id="type" class="mt-1 p-2 border rounded-md w-full">
-            <option value="" {{ (old('type', $listing->type ?? '') == '') ? 'selected' : '' }} disabled>Selecteer een type</option>
+            <option value="" {{ (old('type', $listing->type ?? '') == '') ? 'selected' : '' }} disabled>{!!__('Select a type')!!}</option>
             {{-- Verkoop option --}}
-            <option value="verkoop" {{ (old('type', $listing->type ?? '') == 'verkoop') ? 'selected' : '' }}>Verkoop</option>
-            <option value="verhuur" {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'selected' : '' }}>Verhuur</option>
+            <option value="verkoop" {{ (old('type', $listing->type ?? '') == 'verkoop') ? 'selected' : '' }}>{!!__('Sale')!!}</option>
+            <option value="verhuur" {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'selected' : '' }}>{!!__('Rental')!!}</option>
         </select>
     </div>
     
     <div class="mt-4" id="bidding_allowed_div" style="display: {{ (old('type', $listing->type ?? '') == 'verkoop') ? 'block' : 'none' }}">
-        <label for="bidding_allowed" class="block">Bieden toegestaan:</label>
+        <label for="bidding_allowed" class="block">{!!__('Bids allowed')!!}:</label>
         <input name="bidding_allowed" id="bidding_allowed" type="checkbox" value="1" {{ (old('bidding_allowed', $listing->bidding_allowed ?? '') == '1') ? 'checked' : '' }}>
     </div>
 
     <div class="mt-4" id="rental_days_div" style="display: {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'block' : 'none' }}">
-        <label for="rental_days" class="block">Verhuurperiode:</label>
+        <label for="rental_days" class="block">{!!__('Rental period')!!}:</label>
         <input name="rental_days" type="number" value="{{ old('rental_days', $listing->rental_days ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
     </div>
 
@@ -56,16 +56,16 @@
     </script>
     
     <div class="mt-4">
-        <label for="price" class="block">Prijs:</label>
+        <label for="price" class="block">{!!__('Price')!!}:</label>
         <input name="price" type="number" step="any" value="{{ old('price', $listing->price ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
     </div>
 
     <div class="mt-4">
-        <label for="image" class="block">Afbeelding:</label>
+        <label for="image" class="block">{!!__('Image')!!}:</label>
         <input name="image" type="file" accept=".jpeg,.jpg,.png,.gif,.svg" class="mt-1 p-2 border rounded-md w-full">
     </div>
 
-    <button type="submit" id="save_listing" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Opslaan</button>
+    <button type="submit" id="save_listing" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Save')!!}</button>
 </form>
 
 @endsection
