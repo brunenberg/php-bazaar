@@ -50,7 +50,7 @@
                         @foreach ($returnDates[$day] as $listing)
                             <div class="event bg-purple-100 p-2 rounded-lg mb-2">
                                 <div class="title">{!!__('End of rental')!!}:</div>
-                                <div class="title">{{ $listing }}</div>
+                                <div class="title">{{ $listing['listing']->title }}</div>
                                 @php
                                     $dialogId = "return-dialog-$day";
                                 @endphp

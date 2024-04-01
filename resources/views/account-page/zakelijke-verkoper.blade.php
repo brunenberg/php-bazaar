@@ -40,6 +40,54 @@
             <input name="tekstkleur" type="color" class="mt-1 p-1 border rounded-md w-full" value="{{$company->text_color}}">
         </div>
 
+        <div class="mt-4">
+            <label class="block">{!!__('Select featured listings')!!}</label>
+            <div class="mt-2 relative">
+                <button type="button" class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="featuredListingsDropdown" aria-haspopup="true" aria-expanded="false">
+                    {!!__('Select Listings')!!} (Max 3)
+                    <span class="ml-2">⌵</span>
+                </button>
+        
+                <div class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg hidden" id="featuredListingsDropdownContent">
+                    <div class="overflow-y-auto max-h-48">
+                        @foreach($company->listings as $listing)
+                            <label class="block px-4 py-2 hover:bg-gray-100">
+                                @php
+                                    $featuredListings = json_decode($company->featured_listings, true);
+                                @endphp
+                                <input type="checkbox" name="featured_listings[]" value="{{ $listing->id }}" class="mr-2" @if($featuredListings && in_array($listing->id, $featuredListings)) checked @endif>
+                                {{ $listing->title }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var dropdownButton = document.getElementById('featuredListingsDropdown');
+                var dropdownContent = document.getElementById('featuredListingsDropdownContent');
+                var checkboxes = dropdownContent.querySelectorAll('input[type="checkbox"]');
+                var maxSelections = 3;
+        
+                dropdownButton.addEventListener('click', function() {
+                    var expanded = dropdownButton.getAttribute('aria-expanded') === 'true' || false;
+                    dropdownButton.setAttribute('aria-expanded', !expanded);
+                    dropdownContent.classList.toggle('hidden');
+                });
+        
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        var checkedCheckboxes = dropdownContent.querySelectorAll('input[type="checkbox"]:checked');
+                        if (checkedCheckboxes.length > maxSelections) {
+                            this.checked = false;
+                        }
+                    });
+                });
+            });
+        </script>        
+
         <input type="hidden" name="companyId" value="{{ $company->id }}">
         <button type="submit" id="save_page_settings" class="mt-8 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Save')!!}</button>
     </form>

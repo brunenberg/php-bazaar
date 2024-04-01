@@ -36,6 +36,10 @@ class CompanyController extends Controller
             $company->image = $name;
         }
 
+        // Get the featured listings from the request and store them in the json column
+        $featuredListings = $request->featured_listings;
+        $company->featured_listings = json_encode($featuredListings);
+
         $company->save();
         return redirect()->back()->with('success', __('messages.information_updated'));
     }
@@ -49,7 +53,17 @@ class CompanyController extends Controller
         }
         $templates = $company->templates;
 
-        return view('company.show', compact('company', 'templates'));
+        $featuredListings = [];
+        $featuredListingsJson = $company->featured_listings;
+        $featuredListingsIds = json_decode($featuredListingsJson);
+        if($featuredListingsIds !== null){
+            foreach ($featuredListingsIds as $key => $listing) {
+                $listing = $company->listings()->where('id', $listing)->first();
+                $featuredListings[] = $listing;
+            }
+        }
+        
+        return view('company.show', compact('company', 'templates', 'featuredListings'));
     }
 
     public function addTemplate(Request $request)

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('background_color')->nullable();
             $table->string('text_color')->nullable();
+            $table->json('featured_listings')->nullable();
             $table->timestamps();
         });
     }
