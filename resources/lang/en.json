@@ -126,5 +126,13 @@
     "Average": "Average",
     "Fast": "Fast",
     "Return": "Return",
-    "Returned": "Returned"
+    "Returned": "Returned",
+    "Search for a listing": "Search for a listing",
+    "Sort by latest": "Sort by latest",
+    "Sort by oldest": "Sort by oldest",
+    "Sort by price: low to high": "Sort by price: low to high",
+    "Sort by price: high to low": "Sort by price: high to low",
+    "Search": "Search",
+    "Minimum price": "Minimum price",
+    "Maximum price": "Maximum price"
 }
