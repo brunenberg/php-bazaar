@@ -198,7 +198,6 @@ class ListingController extends Controller
     
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $listing = Listing::find($id);
     
         // Check if the listing exists and belongs to the authenticated user or their company
