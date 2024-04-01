@@ -126,7 +126,15 @@
     "Average": "Gemiddeld",
     "Fast": "Snel",
     "Return": "Inleveren",
-    "Returned": "Ingeleverd"
+    "Returned": "Ingeleverd",
+    "Search for a listing": "Zoek een advertentie",
+    "Sort by latest": "Sorteer van nieuw naar oud",
+    "Sort by oldest": "Sorteer van oud naar nieuw",
+    "Sort by price: low to high": "Sorteer op prijs: laag naar hoog",
+    "Sort by price: high to low": "Sorteer op prijs: hoog naar laag",
+    "Search": "Zoek",
+    "Minimum price": "Minimum prijs",
+    "Maximum price": "Maximum prijs"
 }
 
 
