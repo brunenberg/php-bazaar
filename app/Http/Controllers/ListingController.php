@@ -74,41 +74,6 @@ class ListingController extends Controller
         ]);
     }
 
-    private function validateCsvData($data)
-    {
-        $validator = Validator::make($data, [
-            'title' => 'required',
-            'description' => 'required',
-            'type' => 'required|in:verkoop,verhuur',
-            'image' => 'required|string',
-            'bidding_allowed' => 'nullable|boolean',
-            'rental_days' => $data['type'] == 'verhuur' ? 'required|integer' : 'nullable',
-            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        ]);
-    
-        if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-    
-            throw new \Exception(json_encode($errors));
-        }
-    }    
-    
-    
-    private function createListing($data)
-    {
-        $listing = new Listing;
-        $listing->title = $data['title'];
-        $listing->description = $data['description'];
-        $listing->type = $data['type'];
-        $listing->image = $data['image'];
-        $listing->price = $data['price'];
-        $listing->bidding_allowed = $data['bidding_allowed'];
-        $listing->rental_days = $data['rental_days'];
-        $listing->user_id = $data['user_id'];
-        $listing->company_id = $data['company_id'];
-        $listing->save();
-    }
-
     public function uploadCsv(Request $request)
     {
         
@@ -124,14 +89,18 @@ class ListingController extends Controller
 
         while (($row = fgetcsv($file)) !== false) {
             $rowNumber++;
+
+            if (!isset($row[0], $row[1], $row[2], $row[3], $row[4], $row[5])) {
+                return redirect()->back()->withErrors(['csv_file' => "Row {$rowNumber}: Missing one or more columns"]);
+            }
+
             $listingData = [
                 'type' => $row[0],
                 'title' => $row[1],
                 'description' => $row[2],
-                'image' => $row[3],
-                'price' => trim($row[4]),
-                'bidding_allowed' => $row[5] === 'true' ? true : false,
-                'rental_days' => $row[6] !== '' ? $row[6] : null,
+                'price' => trim($row[3]),
+                'bidding_allowed' => $row[4] === 'true' ? true : false,
+                'rental_days' => $row[5] !== '' ? $row[5] : null,
                 'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
                 'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
             ];
@@ -156,6 +125,61 @@ class ListingController extends Controller
         return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
     }
 
+    private function validateCsvData($data)
+    {
+        $validator = Validator::make($data, [
+            'title' => 'required',
+            'description' => 'required',
+            'type' => 'required|in:verkoop,verhuur',
+            'bidding_allowed' => 'nullable|boolean',
+            'rental_days' => $data['type'] == 'verhuur' ? 'required|integer' : 'nullable',
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        ]);
+    
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+    
+            throw new \Exception(json_encode($errors));
+        }
+    }
+
+    public function uploadImage(Request $request, $id)
+    {
+        $request->validate([
+            'listing_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $listing = Listing::find($id);
+
+        if (!$listing) {
+            return redirect()->back()->withErrors(['listing_image' => "Listing not found"]);
+        }
+
+        $imageName = time().'.'.$request->listing_image->extension();  
+    
+        $request->listing_image->move(public_path('images'), $imageName);
+
+        $listing->image = $imageName;
+        $listing->save();
+
+        return redirect()->route('listings')->with('success', 'Image uploaded successfully.');
+    }
+    
+    private function createListing($data)
+    {
+        $listing = new Listing;
+        $listing->title = $data['title'];
+        $listing->description = $data['description'];
+        $listing->type = $data['type'];
+        $listing->image = null;
+        $listing->price = $data['price'];
+        $listing->bidding_allowed = $data['bidding_allowed'];
+        $listing->rental_days = $data['rental_days'];
+        $listing->user_id = $data['user_id'];
+        $listing->company_id = $data['company_id'];
+        $listing->active = false;
+        $listing->save();
+    }
 
     public function edit($id)
     {
@@ -297,6 +321,23 @@ class ListingController extends Controller
     public function activate($id)
     {
         $listing = Listing::find($id);
+
+        if ($listing->image === null) {
+            return redirect()->back()->with('error', 'You need to upload an image before activating this listing.');
+        }
+
+        $user = auth()->user();
+        
+        if ($user->user_type === 'particuliere_verkoper') {
+            $activeListingsCount = $user->listings()->where('active', true)->count();
+        } else if ($user->user_type === 'zakelijke_verkoper') {
+            $activeListingsCount = $user->company->listings()->where('active', true)->count();
+        }
+
+        if ($activeListingsCount >= 4) {
+            return redirect()->back()->with('error', 'You cannot have more than 4 active listings.');
+        }
+
         $listing->active = true;
         $listing->expires_in_days = 7;
         $listing->created_at = now();

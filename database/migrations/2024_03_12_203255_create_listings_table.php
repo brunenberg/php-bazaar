@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description');
             $table->enum('type', ['verkoop', 'verhuur']);
             $table->boolean('bidding_allowed')->default(false);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->boolean('active')->default(true);
             $table->integer('rental_days')->nullable();
             $table->integer('expires_in_days')->default('7');

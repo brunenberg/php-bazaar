@@ -37,6 +37,13 @@
                     <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Deactivate</button>
                 </form>
                 @endif
+                @if(!$listing->image)
+                <form action="{{ route('upload-listing-image', $listing->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="listing_image" accept="image/*">
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Upload Image</button>
+                </form>
+            @endif
             </div>
         </div>
         @endforeach

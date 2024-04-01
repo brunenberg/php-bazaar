@@ -84,6 +84,7 @@ Route::middleware(['checkListingOwner'])->group(function () {
     Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing');
     Route::put('/activate-listing/{id}', [ListingController::class, 'activate'])->name('activate-listing');
     Route::put('/deactivate-listing/{id}', [ListingController::class, 'deactivate'])->name('deactivate-listing');
+    Route::post('/listing/{id}/upload-image', [ListingController::class, 'uploadImage'])->name('upload-listing-image');
 });
 
 // Middleware group for users that need to be admin
