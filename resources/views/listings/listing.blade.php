@@ -47,7 +47,7 @@
                 </div>
                 <div class="bg-white rounded-lg shadow-md p-6 mt-5 ml-5">
                     
-                    <p><i class="fa-solid fa-magnifying-glass"></i> Condition: 
+                    <p><i class="fa-solid fa-magnifying-glass"></i> {{__('Condition')}}: 
                         @if ($listing->condition >= 90)
                             {{__('New')}}
                         @elseif ($listing->condition >= 70 && $listing->condition < 90)
