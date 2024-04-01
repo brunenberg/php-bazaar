@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class SetLocale {
     public function handle($request, Closure $next) {
-        if (Auth::check()) {
+        if (auth()->check()) {
             $locale = Auth::user()->language;
         } else {
-            $locale = 'nl';
+            // Get the locale from the session
+            $locale = session('locale', 'nl');
         }
         app()->setLocale($locale);
         return $next($request);
