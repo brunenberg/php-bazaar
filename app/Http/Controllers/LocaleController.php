@@ -12,9 +12,10 @@ class LocaleController extends Controller {
             $user = Auth::user();
             $user->language = $request->locale;
             $user->save();
+        } else {
+            Session::put('locale', $request->locale);
         }
     
-        Session::put('locale', $request->locale);
         return back();
     }
     

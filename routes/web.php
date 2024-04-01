@@ -35,6 +35,7 @@ Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
+Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setLocale');
 
 // Middleware group for users with company
 Route::middleware(['company'])->group(function () {
@@ -57,7 +58,6 @@ Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf')->middleware(
 Route::middleware(['auth'])->group(function () {
     Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
     Route::post('/listing/review', [ListingController::class, 'addReview'])->name('listing/review');
-    Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setlocale');
     Route::post('/account/remove-favorite', [UserAccountController::class, 'removeFavorite'])->name('account/remove-favorite');
     Route::post('/account/add-favorite', [UserAccountController::class, 'addFavorite'])->name('account/add-favorite');
     Route::post('/listing/delete-review', [ListingController::class, 'deleteReview'])->name('listing/delete-review');
