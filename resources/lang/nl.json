@@ -27,6 +27,7 @@
     "Text color": "Tekstkleur",
     "Save": "Opslaan",
     "Layout": "Indeling",
+    "Add": "Toevoegen",
     "Delete": "Verwijderen",
     "Select language": "Selecteer taal",
     "Log out": "Uitloggen",
@@ -115,5 +116,17 @@
     "Like New": "Zo goed als nieuw",
     "Good": "Goed",
     "Used": "Gebruikt",
-    "Poor": "Slecht"
+    "Poor": "Slecht",
+    "Upload photo for return": "Upload foto voor retourzending",
+    "Upload": "Upload",
+    "Close": "Sluiten",
+    "Wear speed": "Slijtagesnelheid",
+    "Select speed": "Selecteer snelheid",
+    "Slow": "Traag",
+    "Average": "Gemiddeld",
+    "Fast": "Snel"
 }
+
+
+
+

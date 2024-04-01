@@ -27,6 +27,7 @@
     "Text color": "Text color",
     "Save": "Save",
     "Layout": "Layout",
+    "Add": "Add",
     "Delete": "Delete",
     "Select language": "Select language",
     "Log out": "Log out",
@@ -115,6 +116,14 @@
     "Like new": "Like new",
     "Good": "Good",
     "Used": "Used",
-    "Poor": "Poor"
+    "Poor": "Poor",
+    "Upload photo for return": "Upload photo for return",
+    "Upload": "Upload",
+    "Close": "Close",
+    "Wear speed": "Wear speed",
+    "Select speed": "Select speed",
+    "Slow": "Slow",
+    "Average": "Average",
+    "Fast": "Fast"
 
 }

@@ -17,7 +17,6 @@ class BidController extends Controller
             return back()->with('error', __('messages.bid_on_own_listing'));
         }
 
-        // Check if user has placed 3 bids on whole platform
         if (auth()->user()->bids->count() >= 4) {
             return back()->with('error', __('messages.max_bids'));
         }

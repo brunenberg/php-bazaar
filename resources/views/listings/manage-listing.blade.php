@@ -35,12 +35,12 @@
         <label for="rental_days" class="block">{!!__('Rental period')!!}:</label>
         <input name="rental_days" type="number" value="{{ old('rental_days', $listing->rental_days ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
 
-        <label for="wear_speed" class="block">Slijtage (snelheid):</label>
+        <label for="wear_speed" class="block">{!!__('Wear speed')!!}:</label>
         <select name="wear_speed" class="mt-1 p-2 border rounded-md w-full">
-            <option value="" {{ (old('type', $listing->wear_speed ?? '') == '') ? 'selected' : '' }} disabled>Selecteer snelheid</option>
-            <option value="slow" {{ (old('type', $listing->wear_speed ?? '') == '1') ? 'selected' : '' }}>Langzaam</option>
-            <option value="normal" {{ (old('type', $listing->wear_speed ?? '') == '2') ? 'selected' : '' }}>Normaal</option>
-            <option value="fast" {{ (old('type', $listing->wear_speed ?? '') == '3') ? 'selected' : '' }}>Snel</option>
+            <option value="" {{ (old('type', $listing->wear_speed ?? '') == '') ? 'selected' : '' }} disabled>{!!__('Select speed')!!}</option>
+            <option value="slow" {{ (old('type', $listing->wear_speed ?? '') == '1') ? 'selected' : '' }}>{!!__('Slow')!!}</option>
+            <option value="normal" {{ (old('type', $listing->wear_speed ?? '') == '2') ? 'selected' : '' }}>{!!__('Average')!!}</option>
+            <option value="fast" {{ (old('type', $listing->wear_speed ?? '') == '3') ? 'selected' : '' }}>{!!__('Fast')!!}</option>
         </select>
     </div>
 

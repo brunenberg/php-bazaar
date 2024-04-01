@@ -52,8 +52,6 @@ class CompanyController extends Controller
         return view('company.show', compact('company', 'templates'));
     }
 
-
-
     public function addTemplate(Request $request)
     {
         $company = Company::find($request->input('companyId'));
