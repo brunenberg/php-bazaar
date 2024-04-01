@@ -15,7 +15,7 @@ class CompanyController extends Controller
         $validatedData = $request->validate([
             'winkelnaam' => 'required|string|max:255',
             'winkelbeschrijving' => 'nullable|string',
-            'slug' => 'nullable',
+            'slug' => 'required|string|max:50',
             'image' => 'nullable|image',
             'achtergrondkleur' => 'nullable|string|max:7',
             'tekstkleur' => 'nullable|string|max:7',
