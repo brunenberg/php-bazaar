@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ListingController extends Controller
 {
@@ -76,7 +77,6 @@ class ListingController extends Controller
 
     public function uploadCsv(Request $request)
     {
-        
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt',
         ]);
@@ -84,42 +84,39 @@ class ListingController extends Controller
         $file = fopen($request->file('csv_file'), 'r');
         
         $header = fgetcsv($file);
-
+    
         $rowNumber = 1;
-
-        while (($row = fgetcsv($file)) !== false) {
-            $rowNumber++;
-
-            if (!isset($row[0], $row[1], $row[2], $row[3], $row[4], $row[5])) {
-                return redirect()->back()->withErrors(['csv_file' => "Row {$rowNumber}: Missing one or more columns"]);
-            }
-
-            $listingData = [
-                'type' => $row[0],
-                'title' => $row[1],
-                'description' => $row[2],
-                'price' => trim($row[3]),
-                'bidding_allowed' => $row[4] === 'true' ? true : false,
-                'rental_days' => $row[5] !== '' ? $row[5] : null,
-                'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
-                'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
-            ];
-        
-            try {
+    
+        DB::beginTransaction();
+    
+        try {
+            while (($row = fgetcsv($file)) !== false) {
+                $rowNumber++;
+    
+                if (!isset($row[0], $row[1], $row[2], $row[3], $row[4], $row[5])) {
+                    throw new \Exception("Row {$rowNumber}: Missing one or more columns");
+                }
+    
+                $listingData = [
+                    'type' => $row[0],
+                    'title' => $row[1],
+                    'description' => $row[2],
+                    'price' => trim($row[3]),
+                    'bidding_allowed' => $row[4] === 'true' ? true : false,
+                    'rental_days' => $row[5] !== '' ? $row[5] : null,
+                    'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
+                    'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
+                ];
+            
                 $this->validateCsvData($listingData);
-            } catch (\Exception $e) {
-                $errors = json_decode($e->getMessage(), true);
-
-                $errors = array_map(function ($error) use ($rowNumber) {
-                    return "Row {$rowNumber}: {$error}";
-                }, $errors);
-
-                return redirect()->back()->withErrors(['csv_file' => $errors]);
+                $this->createListing($listingData);
             }
-        
-            $this->createListing($listingData);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['csv_file' => $e->getMessage()]);
         }
     
+        DB::commit();
         fclose($file);
     
         return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
