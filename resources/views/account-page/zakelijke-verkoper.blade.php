@@ -46,7 +46,10 @@
                     <div class="overflow-y-auto max-h-48">
                         @foreach($company->listings as $listing)
                             <label class="block px-4 py-2 hover:bg-gray-100">
-                                <input type="checkbox" name="featured_listings[]" value="{{ $listing->id }}" class="mr-2" @if(in_array($listing->id, json_decode($company->featured_listings))) checked @endif>
+                                @php
+                                    $featuredListings = json_decode($company->featured_listings, true);
+                                @endphp
+                                <input type="checkbox" name="featured_listings[]" value="{{ $listing->id }}" class="mr-2" @if($featuredListings && in_array($listing->id, $featuredListings)) checked @endif>
                                 {{ $listing->title }}
                             </label>
                         @endforeach
