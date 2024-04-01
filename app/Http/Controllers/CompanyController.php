@@ -41,7 +41,7 @@ class CompanyController extends Controller
         $company->featured_listings = json_encode($featuredListings);
 
         $company->save();
-        return redirect()->back()->with('success', 'Information successfully updated.');;
+        return redirect()->back()->with('success', __('messages.information_updated'));
     }
 
     public function show(string $slug = null)
@@ -66,8 +66,6 @@ class CompanyController extends Controller
         return view('company.show', compact('company', 'templates', 'featuredListings'));
     }
 
-
-
     public function addTemplate(Request $request)
     {
         $company = Company::find($request->input('companyId'));
@@ -75,7 +73,7 @@ class CompanyController extends Controller
         $order = $company->templates()->max('order') + 1;
         $company->templates()->attach($templateId, ['order' => $order]);
 
-        return redirect()->back()->with('success', 'Template successfully added.');;
+        return redirect()->back()->with('success', __('messages.template_added'));;
     }
 
     public function removeTemplate(Request $request)
@@ -84,7 +82,7 @@ class CompanyController extends Controller
         $company = Company::find($request->input('companyId'));
         $company->templates()->wherePivot('id', $pivotId)->detach();
 
-        return redirect()->back()->with('success', 'Template successfully removed.');
+        return redirect()->back()->with('success', __('messages.template_removed'));
     }
 
     public function orderUp(Request $request)
@@ -165,7 +163,7 @@ class CompanyController extends Controller
 
         $existingReview = $company->reviews()->where('user_id', auth()->user()->id)->first();
         if ($existingReview) {
-            return redirect()->back()->with('error', 'You have already placed a review for this company.');
+            return redirect()->back()->with('error', __('messages.already_placed_company_review'));
         }
 
         $company->reviews()->attach(auth()->user()->id, [
@@ -173,7 +171,7 @@ class CompanyController extends Controller
             'review' => $validatedData['review']
         ]);
 
-        return redirect()->back()->with('success', 'Review added successfully.');;
+        return redirect()->back()->with('success', __('messages.review_added'));;
     }
 
     public function deleteReview(Request $request)
@@ -185,7 +183,7 @@ class CompanyController extends Controller
         $company = Company::find($validatedData['company_id']);
         $company->reviews()->detach(auth()->user()->id);
 
-        return redirect()->back()->with('success', 'Review removed successfully.');;
+        return redirect()->back()->with('success', __('messages.review_removed'));;
     }
 
 

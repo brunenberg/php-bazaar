@@ -11,10 +11,10 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'You need to be logged in to access this page.');
+            return redirect()->route('login')->with('error', __('messages.log_in_before_accessing_page'));
         }
         if ($request->user() && $request->user()->user_type !== 'admin') {
-            return redirect()->route('home')->with('error', 'You are not authorized to access this page.');
+            return redirect()->route('home')->with('error', __('messages.not_authorized_to_access_page'));
         }
         return $next($request);
     }

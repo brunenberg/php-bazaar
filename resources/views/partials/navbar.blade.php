@@ -17,17 +17,17 @@
         </li>
         @if (auth()->check() && (auth()->user()->user_type === 'zakelijke_verkoper' || auth()->user()->user_type === 'particuliere_verkoper'))
         <li>
-          <a href="/listings" class="block py-2 px-3 text-{{ Request::is('listings') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">Mijn advertenties</a>
+          <a href="/listings" class="block py-2 px-3 text-{{ Request::is('listings') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">{!!__('My listings')!!}</a>
         </li>
         @endif
         @if (auth()->check() && auth()->user()->user_type === 'admin')
         <li>
-          <a href="/companies" class="block py-2 px-3 text-{{ Request::is('companies') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">Bedrijven</a>
+          <a href="/companies" class="block py-2 px-3 text-{{ Request::is('companies') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">{!!__('Companies')!!}</a>
         </li>
         @endif
         @if (auth()->check())
         <li>
-          <a href="/agenda" class="block py-2 px-3 text-{{ Request::is('agenda') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">Agenda</a>
+          <a href="/agenda" class="block py-2 px-3 text-{{ Request::is('agenda') ? 'blue' : 'black' }}-700 rounded md:bg-transparent md:p-0">{!!__('Calendar')!!}</a>
         </li>
         @endif
         <li>

@@ -30,7 +30,7 @@ class ListingController extends Controller
     public function store(Request $request)
     {
         if (!$request->hasFile('image')) {
-            return redirect()->back()->with('error', 'You need to upload an image.');
+            return redirect()->back()->with('error', __('messages.upload_image'));
         }
         $this->validateRequest($request);
     
@@ -39,10 +39,6 @@ class ListingController extends Controller
             $listingsCount = auth()->user()->listings->count();
         } else if (auth()->user()->user_type === 'zakelijke_verkoper') {
             $listingsCount = auth()->user()->company->listings->count();
-        }
-    
-        if ($listingsCount >= 4) {
-            return redirect()->back()->with('error', 'You have reached the maximum number of listings.');
         }
     
         $imageName = time().'.'.$request->image->extension();  
@@ -64,7 +60,7 @@ class ListingController extends Controller
     
         $this->createListing($listingData);
     
-        return redirect()->route('listings')->with('success', 'You have successfully created a listing.');
+        return redirect()->route('listings')->with('success', __('messages.created_listing'));
     }
 
     private function validateRequest($request)
@@ -125,7 +121,7 @@ class ListingController extends Controller
         DB::commit();
         fclose($file);
     
-        return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
+        return redirect()->route('listings')->with('success', __('messages.csv_uploaded'));
     }
 
     private function validateCsvData($data)
@@ -165,7 +161,7 @@ class ListingController extends Controller
         $listing->image = $imageName;
         $listing->save();
 
-        return redirect()->route('listings')->with('success', 'Image uploaded successfully.');
+        return redirect()->route('listings')->with('success', __('messages.image_uploaded'));
     }
     
     private function createListing($data)
@@ -190,7 +186,7 @@ class ListingController extends Controller
     
         // Check if the listing exists and belongs to the authenticated user or their company
         if (!$listing || ($listing->user_id != auth()->id() && $listing->company_id != auth()->user()->company->id)) {
-            return redirect()->back()->with('error', 'Listing not found.');
+            return redirect()->back()->with('error', __('messages.listing_not_found'));
         }
     
         return view('listings.manage-listing', ['listing' => $listing]);
@@ -202,7 +198,7 @@ class ListingController extends Controller
     
         // Check if the listing exists and belongs to the authenticated user or their company
         if (!$listing || ($listing->user_id != auth()->id() && $listing->company_id != auth()->user()->company->id)) {
-            return redirect()->back()->with('error', 'Listing not found.');
+            return redirect()->back()->with('error', __('messages.listing_not_found'));
         }
     
         $this->validateRequest($request);
@@ -234,7 +230,7 @@ class ListingController extends Controller
         $listing->price = $request->price;
         $listing->save();
     
-        return redirect()->route('listings')->with('success', 'Listing updated successfully.');
+        return redirect()->route('listings')->with('success', __('messages.listing_updated'));
     }
     
     public function destroy($id)
@@ -243,7 +239,7 @@ class ListingController extends Controller
     
         // Check if the listing exists and belongs to the authenticated user or their company
         if (!$listing || ($listing->user_id != auth()->id() && $listing->company_id != auth()->user()->company->id)) {
-            return redirect()->back()->with('error', 'Listing not found.');
+            return redirect()->back()->with('error', __('messages.listing_not_found'));
         }
     
         // Delete the associated reviews
@@ -254,7 +250,7 @@ class ListingController extends Controller
     
         $listing->delete();
     
-        return redirect()->route('listings')->with('success', 'Listing deleted successfully.');
+        return redirect()->route('listings')->with('success', __('messages.listing_deleted'));
     }
 
     public function show($id)
@@ -279,7 +275,7 @@ class ListingController extends Controller
 
         $existingReview = $listing->reviews()->where('user_id', auth()->user()->id)->first();
         if ($existingReview) {
-            return redirect()->back()->with('error', 'You have already placed a review for this listing.');
+            return redirect()->back()->with('error', __('messages.already_placed_listing_review'));
         }
 
         $listing->reviews()->attach(auth()->user()->id, [
@@ -333,7 +329,7 @@ class ListingController extends Controller
         $listing = Listing::find($id);
 
         if ($listing->image === null) {
-            return redirect()->back()->with('error', 'You need to upload an image before activating this listing.');
+            return redirect()->back()->with('error', __('messages.image_before_publishing'));
         }
 
         $user = auth()->user();
@@ -345,7 +341,7 @@ class ListingController extends Controller
         }
 
         if ($activeListingsCount >= 4) {
-            return redirect()->back()->with('error', 'You cannot have more than 4 active listings.');
+            return redirect()->back()->with('error', __('messages.max_active_listings'));
         }
 
         $listing->active = true;

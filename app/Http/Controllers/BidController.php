@@ -14,12 +14,11 @@ class BidController extends Controller
         $user = auth()->user();
 
         if ($user && ($listing->user_id == $user->id || ($listing->company_id && $user->company && $listing->company_id == $user->company->id))) {
-            return back()->with('error', 'You cannot place a bid on your own listing.');
+            return back()->with('error', __('messages.bid_on_own_listing'));
         }
 
-        // Check if user has placed 3 bids on whole platform
         if (auth()->user()->bids->count() >= 4) {
-            return back()->with('error', 'You can only place 4 bids at a time.');
+            return back()->with('error', __('messages.max_bids'));
         }
 
 
@@ -34,7 +33,7 @@ class BidController extends Controller
         $bid->user_id = auth()->id();
         $bid->save();
 
-        return back()->with('success', 'Bid added successfully.');
+        return back()->with('success', __('messages.bid_placed'));
     }
 
     public function deleteBid(Request $request)
@@ -44,7 +43,7 @@ class BidController extends Controller
         ]);
         $bid = Bid::find($request->bid_id);
         $bid->delete();
-        return back()->with('success', 'Bid deleted successfully.');
+        return back()->with('success', __('messages.bid_deleted'));
     }
 
     public function acceptBid(Request $request)
@@ -59,7 +58,7 @@ class BidController extends Controller
         $bid->listing->bought()->attach($bid->user_id, ['created_at' => now()]);
         $bid->listing->active = false;
         $bid->listing->save();
-        return back()->with('success', 'Bid accepted successfully.');
+        return back()->with('success', __('messages.bid_accepted'));
     }
 
     public function declineBid(Request $request)
@@ -70,6 +69,6 @@ class BidController extends Controller
         $bid = Bid::find($request->bid_id);
         $bid->accepted = false;
         $bid->save();
-        return back()->with('success', 'Bid declined successfully.');
+        return back()->with('success', __('messages.bid_denied'));
     }
 }

@@ -11,10 +11,10 @@ class CompanyMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'You need to be logged in to access this page.');
+            return redirect()->route('login')->with('error', __('messages.log_in_to_access_page'));
         }
         if ($request->user() && $request->user()->user_type !== 'zakelijke_verkoper') {
-            return redirect()->route('home')->with('error', 'You are not authorized to access this page.');
+            return redirect()->route('home')->with('error', __('messages.not_authorized_to_access_page'));
         }
         return $next($request);
     }
