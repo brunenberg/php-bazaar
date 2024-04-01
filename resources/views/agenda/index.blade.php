@@ -4,7 +4,7 @@
 <div class="calendar p-4">
     <div class="header flex justify-center items-center mb-4">
         <a href="{{ route('agenda', ['month' => $previousMonth, 'year' => $currentYear]) }}" class="arrow">&lt;</a>
-        <h2 class="text-lg font-semibold mx-5">{{ $currentMonth }}</h2>
+        <h2 class="text-lg font-semibold mx-5">{!! __($currentMonth) !!}</h2>
         <a href="{{ route('agenda', ['month' => $nextMonth, 'year' => $currentYear]) }}" class="arrow">&gt;</a>
     </div>
     <div class="grid grid-cols-7 gap-2">
