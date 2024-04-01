@@ -88,7 +88,7 @@
                 @endif
             </div>
         @endforeach
-        @if (Auth::check())
+        @if (Auth::check() && auth()->user()->user_type === 'gebruiker')
             <div class="mt-5">
                 <form action="{{route('listing/bid')}}" method="POST">
                     @csrf
@@ -98,12 +98,16 @@
                     <button type="submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{__('Place Bid')}}</button>
                 </form>
             </div>
-        @else
-            <p>{!!__('Please log in to place a bid')!!}.</p>
+        @elseif (Auth::check() && auth()->user()->user_type !== 'gebruiker' && $listing->user_id != Auth::user()->id)
+            <p>{!!__('Please log in as a user to place a bid')!!}.</p>
         @endif
     </div>
 </div>
 @endif
+
+
+
+
 
 
 <div class="mx-36 mt-20 bg-white rounded-lg shadow-md p-6">
