@@ -124,5 +124,7 @@
     "Select speed": "Select speed",
     "Slow": "Slow",
     "Average": "Average",
-    "Fast": "Fast"
+    "Fast": "Fast",
+    "Return": "Return",
+    "Returned": "Returned"
 }

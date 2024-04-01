@@ -66,9 +66,9 @@
                                     </form>
                                     <button class="btn btn-primary px-2 mt-1 bg-red-300 rounded-lg mt-10" onclick="document.getElementById('{{ $dialogId }}').close()">{!!__('Close')!!}</button>
                                 </dialog>
-                                <button class="btn btn-primary px-2 mt-1 bg-blue-300 rounded-lg" onclick="openDialog('{{ $dialogId }}')">Return</button>
+                                <button class="btn btn-primary px-2 mt-1 bg-blue-300 rounded-lg" onclick="openDialog('{{ $dialogId }}')">{!!__('Return')!!}</button>
                                 @else
-                                <button class="px-2 mt-1 bg-green-300 rounded-lg" onclick="openDialog('{{ $dialogId }}')">Returned✔</button>
+                                <button class="px-2 mt-1 bg-green-300 rounded-lg" onclick="openDialog('{{ $dialogId }}')">{!!__('Returned')!!}✔</button>
                                     @php
                                         $returnImage = $listing['listing']->returnImage($listing['user_id'], $listing['listing']->id);
                                     @endphp
