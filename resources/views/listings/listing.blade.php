@@ -11,7 +11,11 @@
 <div class="mx-36 mt-20">
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between">
-            <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
+            <div>
+                <p class="text-xl font-semibold text-gray-900 dark:text-white">{{$listing->type}}:</p>
+                <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">€{{$listing->price}}</p>
+            </div>
             <div class="flex justify-end [&>form]:ml-2">
                 @if (Auth::check())
                     <form action="{{route('account/add-favorite')}}" method="POST">
@@ -29,7 +33,19 @@
                 @endif
             </div>
         </div>
-        <img src="{{url('/images/'.$listing->image)}}" alt="Advertentie foto" class="max-h-96 mt-4">
+        <div class="flex flex-col items-start">
+            <img src="{{url('/images/'.$listing->image)}}" alt="Advertentie foto" class="max-h-96 mt-4">
+            <div class="bg-white rounded-lg shadow-md p-6 mt-5">
+                <p><i class="fa-regular fa-user"></i>
+                @if (!$listing->company_id == null)
+                    <a href="{{ route('page.show', $listing->company->slug) }}">{{$listing->company->name}}</a>
+                @else
+                    {{$listing->user->email}}
+                @endif
+                </p>
+            </div>
+        </div>
+        
         <p class="pt-5">{{$listing->description}}</p>
     </div>
 </div>

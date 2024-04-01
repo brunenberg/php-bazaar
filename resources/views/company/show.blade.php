@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-@if (auth()->user()->user_type === 'admin')
+@if (auth()->check() && auth()->user()->user_type === 'admin')
     <div class="mx-20 mt-5 p-5 rounded bg-gray-200">
         <h2 class="font-bold text-2xl pb-3">Download new contract</h2>
         <form action="{{route('company/download-contract')}}" method="POST">

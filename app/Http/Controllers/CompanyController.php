@@ -15,7 +15,7 @@ class CompanyController extends Controller
         $validatedData = $request->validate([
             'winkelnaam' => 'required|string|max:255',
             'winkelbeschrijving' => 'nullable|string',
-            'slug' => 'nullable',
+            'slug' => 'required|string|max:50',
             'image' => 'nullable|image',
             'achtergrondkleur' => 'nullable|string|max:7',
             'tekstkleur' => 'nullable|string|max:7',
@@ -42,11 +42,7 @@ class CompanyController extends Controller
 
     public function show(string $slug = null)
     {
-        if (auth()->user()) {
-            $company = Company::slug($slug)->first();
-        } else {
-            $company = Company::slug($slug)->active()->first();
-        }
+        $company = Company::slug($slug)->first();
 
         if (!$company) {
             abort(404);

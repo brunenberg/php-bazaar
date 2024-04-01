@@ -31,7 +31,7 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
         $cart[] = $listing;
         session()->put('cart', $cart);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Listing added to cart.');
     }
 
     public function remove(Request $request)
@@ -49,7 +49,7 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Listing removed from cart.');
     }
 
 
@@ -69,6 +69,6 @@ class CartController extends Controller
         }
 
         session()->forget('cart');
-        return redirect()->back();
+        return redirect()->back()->with('success', 'You have succesfully checked out.');
     }
 }
