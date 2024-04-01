@@ -45,8 +45,8 @@
                     @endif
                     </p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-6 mt-5 ml-5">
-                    
+                @if ($listing->type == 'verhuur')
+                <div class="bg-white rounded-lg shadow-md p-6 mt-5 ml-5">                    
                     <p><i class="fa-solid fa-magnifying-glass"></i> {{__('Condition')}}: 
                         @if ($listing->condition >= 90)
                             {{__('New')}}
@@ -61,6 +61,10 @@
                         @endif
                     </p>
                 </div>
+                <div class="bg-white rounded-lg shadow-md p-6 mt-5 ml-5">
+                    <p><i class="fa-regular fa-calendar"></i> {{__('Rental period')}}: {{$listing->rental_days}} {{__('days')}}</p>
+                </div>
+                @endif
             </div>
         </div>
         <p class="pt-5">{{$listing->description}}</p>
