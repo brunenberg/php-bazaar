@@ -15,8 +15,17 @@ class LocaleController extends Controller {
         } else {
             Session::put('locale', $request->locale);
         }
-    
-        return back();
+
+        $language = '';
+        switch ($request->locale) {
+            case 'en':
+                $language = 'English';
+                break;
+            case 'nl':
+                $language = 'Nederlands';
+                break;
+        }
+
+        return back()->with('success', 'Language changed to ' . $language . '.');
     }
-    
 }
