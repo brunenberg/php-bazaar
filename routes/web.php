@@ -35,7 +35,6 @@ Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
-Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setLocale');
 
 // Middleware group for users with company
 Route::middleware(['company'])->group(function () {

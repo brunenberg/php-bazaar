@@ -94,14 +94,14 @@
 
     {{-- Show all contracts with accept en reject buttons --}}
     <div>
-        <h2 class="text-2xl font-bold mt-8">Contracten:</h2>
+        <h2 class="text-2xl font-bold mt-8">{!!__('Contracts')!!}:</h2>
         <table class="w-full">
             <thead>
                 <tr>
-                    <th class="border border-gray-300">Datum</th>
-                    <th class="border border-gray-300">Contract</th>
-                    <th class="border border-gray-300">Getekend</th>
-                    <th class="border border-gray-300">Acties</th>
+                    <th class="border border-gray-300">{!!__('Date')!!}</th>
+                    <th class="border border-gray-300">{!!__('Contract')!!}</th>
+                    <th class="border border-gray-300">{!!__('Signed')!!}</th>
+                    <th class="border border-gray-300">{!!__('Actions')!!}</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@
                     <tr>
                         <td class="border border-gray-300">{{ $contract->created_at->format('Y-m-d') }}</td>
                         <td class="border border-gray-300">
-                            <a href="{{asset('contracts/'.$contract->path)}}" class="text-blue-700 hover:underline" download>Download</a>
+                            <a href="{{asset('contracts/'.$contract->path)}}" class="text-blue-700 hover:underline" download>{!!__('Download')!!}</a>
                         </td>
                         <td class="border border-gray-300">
                             @if ($contract->signed === 1)
@@ -125,12 +125,12 @@
                                 <form action="{{route('contract/accept')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="contract_id" value="{{$contract->id}}">
-                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">Accepteren</button>
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">{!!__('Accept')!!}</button>
                                 </form>
                                 <form action="{{route('contract/reject')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="contract_id" value="{{$contract->id}}">
-                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Afwijzen</button>
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">{!!__('Deny')!!}</button>
                                 </form>
                             @endif
                         </td>
@@ -143,9 +143,9 @@
 </div>
 
 <div>
-    <h2 class="text-2xl font-bold mt-8">API:</h2>
-    <button id="copyUrlButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Kopieer API URL</button>
-    <button id="copyTokenButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Kopieer API Token</button>
+    <h2 class="text-2xl font-bold mt-8">{!!__('API')!!}:</h2>
+    <button id="copyUrlButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Copy API url')!!}</button>
+    <button id="copyTokenButton" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">{!!__('Copy API token')!!}</button>
 </div>
 
 <script>
