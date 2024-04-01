@@ -77,16 +77,13 @@ class CompanyController extends Controller
     {
         $pivotId = $request->input('pivotId');
         $company = auth()->user()->company;
-        $template = $company->templates()->wherePivot('id', $pivotId)->first(); // Haal het specifieke template op
-        $currentOrder = $template->pivot->order; // Gebruik pivot om het order op te halen
+        $template = $company->templates()->wherePivot('id', $pivotId)->first();
+        $currentOrder = $template->pivot->order;
 
-        // Zoek het template met een order één lager dan het huidige template
         $targetTemplate = $company->templates()->wherePivot('order', $currentOrder - 1)->first();
 
         if ($targetTemplate) {
-            // Verhoog het order van het target template
             $targetTemplate->pivot->update(['order' => $currentOrder]);
-            // Verlaag het order van het geselecteerde template
             $template->pivot->update(['order' => $currentOrder - 1]);
         }
 
@@ -97,16 +94,13 @@ class CompanyController extends Controller
     {
         $pivotId = $request->input('pivotId');
         $company = auth()->user()->company;
-        $template = $company->templates()->wherePivot('id', $pivotId)->first(); // Haal het specifieke template op
-        $currentOrder = $template->pivot->order; // Gebruik pivot om het order op te halen
+        $template = $company->templates()->wherePivot('id', $pivotId)->first();
+        $currentOrder = $template->pivot->order;
 
-        // Zoek het template met een order één hoger dan het huidige template
         $targetTemplate = $company->templates()->wherePivot('order', $currentOrder + 1)->first();
 
         if ($targetTemplate) {
-            // Verlaag het order van het target template
             $targetTemplate->pivot->update(['order' => $currentOrder]);
-            // Verhoog het order van het geselecteerde template
             $template->pivot->update(['order' => $currentOrder + 1]);
         }
 
