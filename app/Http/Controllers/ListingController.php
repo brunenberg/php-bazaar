@@ -6,6 +6,8 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ListingController extends Controller
 {
@@ -27,15 +29,7 @@ class ListingController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'type' => 'required|in:verkoop,verhuur',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'bidding_allowed' => 'nullable|boolean',
-            'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
-            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        ]);
+        $this->validateRequest($request);
     
         $listingsCount = 0;
         if (auth()->user()->user_type === 'particuliere_verkoper') {
@@ -51,30 +45,137 @@ class ListingController extends Controller
         $imageName = time().'.'.$request->image->extension();  
         $request->image->move(public_path('images'), $imageName);
     
-        $listing = new Listing;
-        $listing->title = $request->title;
-        $listing->description = $request->description;
-        $listing->type = $request->type;
-        $listing->image = $imageName;
-        $listing->price = $request->price;
-
-        if ($request->type == 'verkoop') {
-            $listing->bidding_allowed = $request->filled('bidding_allowed');
-            $listing->rental_days = null;
-        } else if ($request->type == 'verhuur') {
-            $listing->bidding_allowed = false;
-            $listing->rental_days = $request->rental_days;
-        }
+        $listingData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'type' => $request->type,
+            'image' => $imageName,
+            'price' => $request->price,
+            'bidding_allowed' => $request->filled('bidding_allowed'),
+            'rental_days' => $request->type == 'verhuur' ? $request->rental_days : null,
+            'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
+            'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
+        ];
     
-        if (auth()->user()->user_type === 'particuliere_verkoper') {
-            $listing->user_id = auth()->id();
-        } else if (auth()->user()->user_type === 'zakelijke_verkoper') {
-            $listing->company_id = auth()->user()->company->id;
-        }
-    
-        $listing->save();
+        $this->createListing($listingData);
     
         return redirect()->route('listings')->with('success', 'You have successfully created a listing.');
+    }
+
+    private function validateRequest($request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'type' => 'required|in:verkoop,verhuur',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'bidding_allowed' => 'nullable|boolean',
+            'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        ]);
+    }
+
+    public function uploadCsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt',
+        ]);
+    
+        $file = fopen($request->file('csv_file'), 'r');
+        
+        $header = fgetcsv($file);
+    
+        $rowNumber = 1;
+    
+        DB::beginTransaction();
+    
+        try {
+            while (($row = fgetcsv($file)) !== false) {
+                $rowNumber++;
+    
+                if (!isset($row[0], $row[1], $row[2], $row[3], $row[4], $row[5])) {
+                    throw new \Exception("Row {$rowNumber}: Missing one or more columns");
+                }
+    
+                $listingData = [
+                    'type' => $row[0],
+                    'title' => $row[1],
+                    'description' => $row[2],
+                    'price' => trim($row[3]),
+                    'bidding_allowed' => $row[4] === 'true' ? true : false,
+                    'rental_days' => $row[5] !== '' ? $row[5] : null,
+                    'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
+                    'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
+                ];
+            
+                $this->validateCsvData($listingData);
+                $this->createListing($listingData);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['csv_file' => $e->getMessage()]);
+        }
+    
+        DB::commit();
+        fclose($file);
+    
+        return redirect()->route('listings')->with('success', 'CSV uploaded successfully.');
+    }
+
+    private function validateCsvData($data)
+    {
+        $validator = Validator::make($data, [
+            'title' => 'required',
+            'description' => 'required',
+            'type' => 'required|in:verkoop,verhuur',
+            'bidding_allowed' => 'nullable|boolean',
+            'rental_days' => $data['type'] == 'verhuur' ? 'required|integer' : 'nullable',
+            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+        ]);
+    
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+    
+            throw new \Exception(json_encode($errors));
+        }
+    }
+
+    public function uploadImage(Request $request, $id)
+    {
+        $request->validate([
+            'listing_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $listing = Listing::find($id);
+
+        if (!$listing) {
+            return redirect()->back()->withErrors(['listing_image' => "Listing not found"]);
+        }
+
+        $imageName = time().'.'.$request->listing_image->extension();  
+    
+        $request->listing_image->move(public_path('images'), $imageName);
+
+        $listing->image = $imageName;
+        $listing->save();
+
+        return redirect()->route('listings')->with('success', 'Image uploaded successfully.');
+    }
+    
+    private function createListing($data)
+    {
+        $listing = new Listing;
+        $listing->title = $data['title'];
+        $listing->description = $data['description'];
+        $listing->type = $data['type'];
+        $listing->image = null;
+        $listing->price = $data['price'];
+        $listing->bidding_allowed = $data['bidding_allowed'];
+        $listing->rental_days = $data['rental_days'];
+        $listing->user_id = $data['user_id'];
+        $listing->company_id = $data['company_id'];
+        $listing->active = false;
+        $listing->save();
     }
 
     public function edit($id)
@@ -98,15 +199,7 @@ class ListingController extends Controller
             return redirect()->back()->with('error', 'Listing not found.');
         }
     
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'type' => 'required|in:verkoop,verhuur',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'bidding_allowed' => 'nullable|boolean',
-            'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
-            'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
-        ]);
+        $this->validateRequest($request);
     
         if ($request->hasFile('image')) {
             $imageName = time().'.'.$request->image->extension();  
@@ -225,6 +318,23 @@ class ListingController extends Controller
     public function activate($id)
     {
         $listing = Listing::find($id);
+
+        if ($listing->image === null) {
+            return redirect()->back()->with('error', 'You need to upload an image before activating this listing.');
+        }
+
+        $user = auth()->user();
+        
+        if ($user->user_type === 'particuliere_verkoper') {
+            $activeListingsCount = $user->listings()->where('active', true)->count();
+        } else if ($user->user_type === 'zakelijke_verkoper') {
+            $activeListingsCount = $user->company->listings()->where('active', true)->count();
+        }
+
+        if ($activeListingsCount >= 4) {
+            return redirect()->back()->with('error', 'You cannot have more than 4 active listings.');
+        }
+
         $listing->active = true;
         $listing->expires_in_days = 7;
         $listing->created_at = now();
