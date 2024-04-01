@@ -58,5 +58,11 @@
     "Purchase": "Aankoop",
     "Purchases": "Aankopen",
     "Dutch": "Nederlands",
-    "English": "Engels"
+    "English": "Engels",
+    "Condition": "Staat",
+    "New": "Nieuw",
+    "Like New": "Zo goed als nieuw",
+    "Good": "Goed",
+    "Used": "Gebruikt",
+    "Poor": "Slecht"
 }

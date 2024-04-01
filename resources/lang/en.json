@@ -53,6 +53,12 @@
     "Purchase": "Purchase",
     "Purchases": "Purchases",
     "Dutch": "Dutch",
-    "English": "English"
+    "English": "English",
+    "Condition" : "Condition",
+    "New": "New",
+    "Like new": "Like new",
+    "Good": "Good",
+    "Used": "Used",
+    "Poor": "Poor"
 
 }
