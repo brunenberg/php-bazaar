@@ -49,8 +49,8 @@ class HomeController extends Controller
             }   
         }
         if ($request->has('max_price')) {
-            if($request->max_price > 0){
-                $query->where('price', '>=', $request->input('max_price'));
+            if($request->max_price >= 0){
+                $query->where('price', '<=', $request->input('max_price'));
             }  
         }
 
