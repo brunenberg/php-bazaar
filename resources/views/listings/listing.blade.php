@@ -101,6 +101,7 @@
         @elseif (Auth::check() && auth()->user()->user_type !== 'gebruiker' && $listing->user_id != Auth::user()->id)
             <p>{!!__('Please log in as a user to place a bid')!!}.</p>
         @endif
+        
     </div>
 </div>
 @endif
