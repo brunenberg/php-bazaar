@@ -26,7 +26,7 @@
                 $total += $item->price;
             }
         @endphp
-        <p class="text-lg">Totaal: €{{$total}}</p>
+        <p class="text-lg">Totaal: €{{number_format($total, 2)}}</p>
     <form action="{{route('cart/checkout')}}" method="POST">
         @csrf
         <button type="submit" id="checkout" class="col-span-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Afrekenen</button>
