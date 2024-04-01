@@ -61,8 +61,8 @@
               <form action="{{ route('setLocale') }}" method="POST">
                   @csrf
                   <div class="py-1" role="none">
-                      <button type="submit" name="locale" value="en" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none w-full text-left">English</button>
-                      <button type="submit" name="locale" value="nl" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none w-full text-left">Nederlands</button>
+                      <button type="submit" name="locale" value="en" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none w-full text-left" id="lang-en">English</button>
+                      <button type="submit" name="locale" value="nl" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none w-full text-left" id="lang-nl">Nederlands</button>
                   </div>
               </form>
           </div>   

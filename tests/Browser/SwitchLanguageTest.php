@@ -16,13 +16,13 @@ class SwitchLanguageTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit('/account')
-                    ->select('locale', 'en')
-                    ->press('select-locale')
-                    ->assertSee('Language')
-                    ->select('locale', 'nl')
-                    ->press('select-locale')
-                    ->assertSee('Taal');
+                    ->visit('/')
+                    ->press('#language-menu')
+                    ->press('#lang-en')
+                    ->assertSee('Latest advertisements')
+                    ->press('#language-menu')
+                    ->press('#lang-nl')
+                    ->assertSee('Meest recente advertenties');
         });
     }
 }
