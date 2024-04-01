@@ -5,7 +5,7 @@
     
     class Listing extends Model {
         
-        protected $fillable = ['title', 'description', 'bidding_allowed', 'image', 'company_id', 'type', 'price'];
+        protected $fillable = ['title', 'description', 'bidding_allowed', 'rental_days', 'image', 'company_id', 'type', 'price'];
         protected $table = 'listings';
 
         public function users()

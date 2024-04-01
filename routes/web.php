@@ -52,8 +52,6 @@ Route::middleware(['company'])->group(function () {
     })->middleware('auth');
 });
 
-Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf')->middleware('auth');
-
 // Middleware group for routes where user has to be signed in
 Route::middleware(['auth'])->group(function () {
     Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
@@ -75,6 +73,7 @@ Route::middleware(['checkUserType'])->group(function () {
     Route::get('/listings', [ListingController::class, 'index'])->name('listings');
     Route::post('/listing/accept-bid', [BidController::class, 'acceptBid'])->name('listing/accept-bid');
     Route::post('/listing/decline-bid', [BidController::class, 'declineBid'])->name('listing/decline-bid');
+    Route::post('/upload-csv', [ListingController::class, 'uploadCsv'])->name('upload-csv');
 });
 
 // Middleware group for users that need to be owner of listing
@@ -84,6 +83,7 @@ Route::middleware(['checkListingOwner'])->group(function () {
     Route::delete('/delete-listing/{id}', [ListingController::class, 'destroy'])->name('delete-listing');
     Route::put('/activate-listing/{id}', [ListingController::class, 'activate'])->name('activate-listing');
     Route::put('/deactivate-listing/{id}', [ListingController::class, 'deactivate'])->name('deactivate-listing');
+    Route::post('/listing/{id}/upload-image', [ListingController::class, 'uploadImage'])->name('upload-listing-image');
 });
 
 // Middleware group for users that need to be admin
