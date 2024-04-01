@@ -29,6 +29,9 @@ class ListingController extends Controller
 
     public function store(Request $request)
     {
+        if (!$request->hasFile('image')) {
+            return redirect()->back()->with('error', 'You need to upload an image.');
+        }
         $this->validateRequest($request);
     
         $listingsCount = 0;
@@ -70,7 +73,7 @@ class ListingController extends Controller
             'title' => 'required',
             'description' => 'required',
             'type' => 'required|in:verkoop,verhuur',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
             'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
             'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
@@ -195,6 +198,7 @@ class ListingController extends Controller
     
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $listing = Listing::find($id);
     
         // Check if the listing exists and belongs to the authenticated user or their company
