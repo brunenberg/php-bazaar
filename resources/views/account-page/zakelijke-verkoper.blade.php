@@ -17,6 +17,12 @@
         <div class="mt-4">
             <label for="slug" class="block">{!!__('Url to store page')!!}</label>
             <input name="slug" type="text" class="mt-1 p-2 border rounded-md w-full" value="{{$company->slug}}">
+            <script>
+                const slugInput = document.querySelector('input[name=slug]');
+                slugInput.addEventListener('input', () => {
+                    slugInput.value = slugInput.value.replace(/\W+/g, '-').toLowerCase();
+                });
+            </script>
         </div>
 
         <div class="mt-4">

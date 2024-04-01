@@ -29,6 +29,9 @@ class ListingController extends Controller
 
     public function store(Request $request)
     {
+        if (!$request->hasFile('image')) {
+            return redirect()->back()->with('error', 'You need to upload an image.');
+        }
         $this->validateRequest($request);
     
         $listingsCount = 0;
@@ -55,6 +58,8 @@ class ListingController extends Controller
             'rental_days' => $request->type == 'verhuur' ? $request->rental_days : null,
             'user_id' => auth()->user()->user_type === 'particuliere_verkoper' ? auth()->id() : null,
             'company_id' => auth()->user()->user_type === 'zakelijke_verkoper' ? auth()->user()->company->id : null,
+            'wear_speed' => $request->type == 'verhuur' ? $request->wear_speed : null,
+            'condition' => $request->type == 'verhuur' ? 100 : null,
         ];
     
         $this->createListing($listingData);
@@ -68,10 +73,11 @@ class ListingController extends Controller
             'title' => 'required',
             'description' => 'required',
             'type' => 'required|in:verkoop,verhuur',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'bidding_allowed' => 'nullable|boolean',
             'rental_days' => $request->type == 'verhuur' ? 'required|integer' : 'nullable',
             'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'wear_speed' => $request->type == 'verhuur' ? 'required|string' : 'nullable',
         ]);
     }
 
@@ -214,6 +220,13 @@ class ListingController extends Controller
             $listing->bidding_allowed = false;
             $listing->rental_days = $request->rental_days;
         }
+
+        if($request->wear_speed){
+            $listing->wear_speed = $request->wear_speed;
+            if($listing->condition == null){
+                $listing->condition = 100;
+            }
+        }
     
         $listing->title = $request->title;
         $listing->description = $request->description;
@@ -348,6 +361,36 @@ class ListingController extends Controller
         $listing = Listing::find($id);
         $listing->active = false;
         $listing->save();
+        return redirect()->back();
+    }
+
+    public function return(Request $request)
+    {
+        $validatedData = $request->validate([
+            'listing_id' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'user_id' => 'required|numeric'
+        ]);
+
+        $listing = Listing::find($validatedData['listing_id']);
+
+        if($listing->wear_speed == 'slow'){
+            $listing->condition -= 2;
+        } else if($listing->wear_speed == 'normal'){
+            $listing->condition -= 5;
+        } else if($listing->wear_speed == 'fast'){
+            $listing->condition -= 8;
+        }
+        $listing->save();
+
+        // Set returned to true in user_bought pivot table
+        $listing->bought()->where('user_id', $validatedData['user_id'])->updateExistingPivot($validatedData['user_id'], ['returned' => true]);
+        $date = now()->format('YmdHis');
+        $imageName = $listing->id . '-' . $date . '.' . $request->image->extension();
+        $listing->bought()->where('user_id', $validatedData['user_id'])->updateExistingPivot($validatedData['user_id'], ['return_image' => $imageName]);
+
+        $request->image->move(public_path('images/returns'), $imageName);
+
         return redirect()->back();
     }
 }

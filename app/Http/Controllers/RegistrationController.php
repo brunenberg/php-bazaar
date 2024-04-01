@@ -31,6 +31,7 @@ class RegistrationController extends Controller
         if ($validatedData['user_type'] === 'zakelijke_verkoper') {
             $company = new Company();
             $company->user_id = $user->id;
+            $company->slug = $user->id . '-' . now()->timestamp;
             $company->save();
         }
         // Eventueel kun je de gebruiker hier inloggen en doorsturen naar een andere pagina

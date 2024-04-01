@@ -35,6 +35,8 @@ Route::get('/register', [RegistrationController::class, 'registerForm']);
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/logout', [RegistrationController::class, 'logout'])->name('logout');
 Route::get('/listing/{id}', [ListingController::class, 'show'])->name('listing.show');
+Route::post('/setlocale', [LocaleController::class, 'setLocale'])->name('setLocale');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 // Middleware group for users with company
 Route::middleware(['company'])->group(function () {
@@ -51,8 +53,6 @@ Route::middleware(['company'])->group(function () {
     })->middleware('auth');
 });
 
-Route::get('/pdf', [PdfController::class, 'generate'])->name('pdf')->middleware('auth');
-
 // Middleware group for routes where user has to be signed in
 Route::middleware(['auth'])->group(function () {
     Route::post('/company/review', [CompanyController::class, 'addReview'])->name('company/review');
@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
     Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
+    Route::post('/agenda/return', [ListingController::class, 'return'])->name('return');
 });
 
 // Middleware group for users that need to have a seller account

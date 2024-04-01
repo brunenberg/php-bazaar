@@ -107,5 +107,12 @@
     "Price": "Price",
     "Image": "Image",
     "My listings": "My listings",
-    "Calendar": "Calendar"
+    "Calendar": "Calendar",
+    "Condition" : "Condition",
+    "New": "New",
+    "Like new": "Like new",
+    "Good": "Good",
+    "Used": "Used",
+    "Poor": "Poor"
+
 }

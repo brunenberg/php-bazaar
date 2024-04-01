@@ -107,5 +107,11 @@
     "Price": "Prijs",
     "Image": "Afbeelding",
     "My listings": "Mijn advertenties",
-    "Calendar": "Agenda"
+    "Calendar": "Agenda",
+    "Condition": "Staat",
+    "New": "Nieuw",
+    "Like New": "Zo goed als nieuw",
+    "Good": "Goed",
+    "Used": "Gebruikt",
+    "Poor": "Slecht"
 }
