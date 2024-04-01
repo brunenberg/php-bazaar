@@ -265,11 +265,11 @@ class ListingController extends Controller
         $listing = Listing::find($validatedData['listing_id']);
 
         if($listing->wear_speed == 'slow'){
-            $listing->condition -= 5;
+            $listing->condition -= 2;
         } else if($listing->wear_speed == 'normal'){
-            $listing->condition -= 10;
+            $listing->condition -= 5;
         } else if($listing->wear_speed == 'fast'){
-            $listing->condition -= 15;
+            $listing->condition -= 8;
         }
         $listing->save();
 
