@@ -17,7 +17,7 @@
                     @if (array_key_exists($day, $soldListings))
                         @foreach ($soldListings[$day] as $listing)
                             <div class="event bg-blue-100 p-2 rounded-lg mb-2">
-                                <div class="title">Verkoop:</div>
+                                <div class="title">{!!__('Sale')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -25,7 +25,7 @@
                     @if (array_key_exists($day, $boughtListingsSale))
                         @foreach ($boughtListingsSale[$day] as $listing)
                             <div class="event bg-blue-100 p-2 rounded-lg mb-2">
-                                <div class="title">Aankoop:</div>
+                                <div class="title">{!!__('Purchase')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -33,7 +33,7 @@
                     @if (array_key_exists($day, $rentalListings))
                         @foreach ($rentalListings[$day] as $listing)
                             <div class="event bg-green-100 p-2 rounded-lg mb-2">
-                                <div class="title">Start verhuur:</div>
+                                <div class="title">{!!__('Start rental')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -41,7 +41,7 @@
                     @if (array_key_exists($day, $boughtListingsRental))
                         @foreach ($boughtListingsRental[$day] as $listing)
                             <div class="event bg-green-100 p-2 rounded-lg mb-2">
-                                <div class="title">Ophalen verhuur:</div>
+                                <div class="title">{!!__('Pick up rental')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -49,7 +49,7 @@
                     @if (array_key_exists($day, $returnDates))
                         @foreach ($returnDates[$day] as $listing)
                             <div class="event bg-purple-100 p-2 rounded-lg mb-2">
-                                <div class="title">Einde verhuur:</div>
+                                <div class="title">{!!__('End of rental')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
@@ -57,7 +57,7 @@
                     @if (array_key_exists($day, $listingDueDates))
                         @foreach ($listingDueDates[$day] as $listing)
                             <div class="event bg-red-100 p-2 rounded-lg mb-2">
-                                <div class="title">Adertentie verloopt:</div>
+                                <div class="title">{!!__('Listing expires')!!}:</div>
                                 <div class="title">{{ $listing }}</div>
                             </div>
                         @endforeach
