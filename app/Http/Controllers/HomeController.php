@@ -44,10 +44,14 @@ class HomeController extends Controller
 
         // Voeg prijsfilter toe
         if ($request->has('min_price')) {
-            $query->where('price', '>=', $request->input('min_price'));
+            if($request->min_price > 0){
+                $query->where('price', '>=', $request->input('min_price'));
+            }   
         }
         if ($request->has('max_price')) {
-            $query->where('price', '<=', $request->input('max_price'));
+            if($request->max_price > 0){
+                $query->where('price', '>=', $request->input('max_price'));
+            }  
         }
 
         $listings = $query->paginate($this->listingsPerPage);
