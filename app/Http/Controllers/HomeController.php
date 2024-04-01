@@ -23,16 +23,17 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $query = Listing::query();
-
+    
+        $query->where('active', true);
+    
         if ($request->has('search')) {
             $query->where('title', 'like', '%' . $request->input('search') . '%');
-            // Voeg meer voorwaarden toe indien nodig voor extra velden
         }
-
+    
         if ($request->has('sort_by')) {
             $sort = explode('_', $request->input('sort_by'));
             $column = $sort[0];
-            $direction = $sort[1] == 'asc' ? 'asc' : 'desc'; // Zorg ervoor dat de richting geldig is
+            $direction = $sort[1] == 'asc' ? 'asc' : 'desc'; 
             if ($column == 'price') {
                 $query->orderBy('price', $direction);
             } else {
@@ -41,8 +42,7 @@ class HomeController extends Controller
         } else {
             $query->orderBy('updated_at', 'desc');
         }
-
-        // Voeg prijsfilter toe
+    
         if ($request->has('min_price')) {
             if($request->min_price > 0){
                 $query->where('price', '>=', $request->input('min_price'));
@@ -53,9 +53,10 @@ class HomeController extends Controller
                 $query->where('price', '<=', $request->input('max_price'));
             }  
         }
-
+    
         $listings = $query->paginate($this->listingsPerPage);
-
+    
         return view('home', compact('listings'));
     }
+    
 }
