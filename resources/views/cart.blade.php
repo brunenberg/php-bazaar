@@ -9,7 +9,7 @@
         <div class="flex flex-col justify-between items-center border border-gray-200 rounded-lg p-4 bg-gray-50">
             <div class="text-center">
                 <p class="font-semibold">{{$item->title}}</p>
-                {{-- <p class="text-gray-600 text-sm">Prijs: €{{$item->price}}</p> --}} 
+                <p class="text-gray-600 text-sm">€{{$item->price}}</p> 
             </div>
             <form action="{{route('cart/remove')}}" method="POST">
                 @csrf
@@ -19,6 +19,14 @@
         </div>
         @endforeach
     </div>
+    <div class="flex justify-between mt-6">
+        @php
+            $total = 0;
+            foreach ($cartItems as $item) {
+                $total += $item->price;
+            }
+        @endphp
+        <p class="text-lg">Totaal: €{{$total}}</p>
     <form action="{{route('cart/checkout')}}" method="POST">
         @csrf
         <button type="submit" id="checkout" class="col-span-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-4">Afrekenen</button>
