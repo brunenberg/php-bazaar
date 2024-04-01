@@ -32,13 +32,24 @@
         
         public function bought()
         {
-            return $this->belongsToMany(User::class, 'user_bought')->withPivot('user_id', 'listing_id');
+            return $this->belongsToMany(User::class, 'user_bought')->withPivot('user_id', 'listing_id', 'created_at', 'returned', 'return_image');
         }
 
         public function user()
         {
             return $this->belongsTo(User::class);
         }
+
+        public function returned($user_id)
+        {
+            return $this->bought()->where('user_id', $user_id)->where('returned', true)->exists();
+        }
+
+        public function returnImage($user_id, $listing_id)
+        {
+            return $this->bought()->where('user_id', $user_id)->where('listing_id', $listing_id)->first()->pivot->return_image;
+        }
+        
     }
 
 ?>

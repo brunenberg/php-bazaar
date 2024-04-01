@@ -23,6 +23,8 @@ return new class extends Migration
             $table->boolean('active')->default(true);
             $table->integer('rental_days')->nullable();
             $table->integer('expires_in_days')->default('7');
+            $table->integer('condition')->nullable();
+            $table->string('wear_speed')->nullable();
             $table->decimal('price', 8, 2);
             $table->timestamps();
         });

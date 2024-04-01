@@ -35,17 +35,34 @@
         </div>
         <div class="flex flex-col items-start">
             <img src="{{url('/images/'.$listing->image)}}" alt="Advertentie foto" class="max-h-96 mt-4">
-            <div class="bg-white rounded-lg shadow-md p-6 mt-5">
-                <p><i class="fa-regular fa-user"></i>
-                @if (!$listing->company_id == null)
-                    <a href="{{ route('page.show', $listing->company->slug) }}">{{$listing->company->name}}</a>
-                @else
-                    {{$listing->user->email}}
-                @endif
-                </p>
+            <div class="flex">
+                <div class="bg-white rounded-lg shadow-md p-6 mt-5">
+                    <p><i class="fa-regular fa-user"></i>
+                    @if (!$listing->company_id == null)
+                        <a href="{{ route('page.show', $listing->company->slug) }}">{{$listing->company->name}}</a>
+                    @else
+                        {{$listing->user->email}}
+                    @endif
+                    </p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 mt-5 ml-5">
+                    
+                    <p><i class="fa-solid fa-magnifying-glass"></i> {{__('Condition')}}: 
+                        @if ($listing->condition >= 90)
+                            {{__('New')}}
+                        @elseif ($listing->condition >= 70 && $listing->condition < 90)
+                            {{__('Like new')}}
+                        @elseif ($listing->condition >= 40 && $listing->condition < 70)
+                            {{__('Good')}}
+                        @elseif ($listing->condition >= 20 && $listing->condition < 40)
+                            {{__('Used')}}
+                        @elseif ($listing->condition < 20)
+                            {{__('Poor')}}
+                        @endif
+                    </p>
+                </div>
             </div>
         </div>
-        
         <p class="pt-5">{{$listing->description}}</p>
     </div>
 </div>

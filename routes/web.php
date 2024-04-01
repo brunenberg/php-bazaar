@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/listing/bid', [BidController::class, 'addBid'])->name('listing/bid');
     Route::post('/listing/delete-bid', [BidController::class, 'deleteBid'])->name('listing/delete-bid');
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
+    Route::post('/agenda/return', [ListingController::class, 'return'])->name('return');
 });
 
 // Middleware group for users that need to have a seller account

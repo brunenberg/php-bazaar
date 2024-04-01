@@ -34,6 +34,14 @@
     <div class="mt-4" id="rental_days_div" style="display: {{ (old('type', $listing->type ?? '') == 'verhuur') ? 'block' : 'none' }}">
         <label for="rental_days" class="block">Verhuurperiode:</label>
         <input name="rental_days" type="number" value="{{ old('rental_days', $listing->rental_days ?? '') }}" class="mt-1 p-2 border rounded-md w-full">
+
+        <label for="wear_speed" class="block">Slijtage (snelheid):</label>
+        <select name="wear_speed" class="mt-1 p-2 border rounded-md w-full">
+            <option value="" {{ (old('type', $listing->wear_speed ?? '') == '') ? 'selected' : '' }} disabled>Selecteer snelheid</option>
+            <option value="slow" {{ (old('type', $listing->wear_speed ?? '') == '1') ? 'selected' : '' }}>Langzaam</option>
+            <option value="normal" {{ (old('type', $listing->wear_speed ?? '') == '2') ? 'selected' : '' }}>Normaal</option>
+            <option value="fast" {{ (old('type', $listing->wear_speed ?? '') == '3') ? 'selected' : '' }}>Snel</option>
+        </select>
     </div>
 
     <script>
