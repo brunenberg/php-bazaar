@@ -12,6 +12,7 @@
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between">
             <div>
+                <p class="text-xl font-semibold text-gray-900 dark:text-white">{{$listing->type}}:</p>
                 <h1 class="font-bold text-4xl">{{$listing->title}}</h1>
                 <p class="text-2xl font-semibold text-gray-900 dark:text-white">€{{$listing->price}}</p>
             </div>
