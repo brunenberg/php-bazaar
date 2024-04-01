@@ -248,6 +248,9 @@ class ListingController extends Controller
         // Delete the associated favorites
         $listing->users()->detach();
     
+        // Delete the associated user_bought records
+        $listing->bought()->detach();
+    
         $listing->delete();
     
         return redirect()->route('listings')->with('success', __('messages.listing_deleted'));
