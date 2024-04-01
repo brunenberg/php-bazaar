@@ -20,11 +20,11 @@ class CheckListingOwner
         $listing = Listing::find($request->route('id'));
     
         if (!$listing) {
-            return redirect()->back()->with('error', 'Listing not found.');
+            return redirect()->back()->with('error', __('messages.listing_not_found'));
         }
     
         if ($listing->user_id != auth()->id() && (!auth()->user()->company || $listing->company_id != auth()->user()->company->id)) {
-            return redirect()->back()->with('error', 'You do not have permission to modify this listing.');
+            return redirect()->back()->with('error', __('messages.no_listing_modify_permission'));
         }
     
         return $next($request);

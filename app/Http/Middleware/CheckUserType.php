@@ -20,6 +20,6 @@ class CheckUserType
             return $next($request);
         }
 
-        return redirect('home')->with('error', 'You do not have access to this page.');
+        return redirect('home')->with('error', __('messages.no_access_to_page'));
     }
 }

@@ -19,19 +19,19 @@ class CartController extends Controller
         // Check if the listing is previously bought
         $bought = auth()->user()->bought()->where('listing_id', $request->listing_id)->exists();
         if ($bought) {
-            return redirect()->back()->with('error', 'You have already bought this listing.');
+            return redirect()->back()->with('error', __('messages.already_bought'));
         }
         // Check if already in shopping cart
         $cart = session()->get('cart', []);
         if (in_array($request->listing_id, array_column($cart, 'id'))) {
-            return redirect()->back()->with('error', 'Listing is already in your cart.');
+            return redirect()->back()->with('error', __('messages.already_in_cart'));
         }
 
         $listing = Listing::find($request->listing_id);
         $cart = session()->get('cart', []);
         $cart[] = $listing;
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Listing added to cart.');
+        return redirect()->back()->with('success', __('messages.listing_added_to_cart'));
     }
 
     public function remove(Request $request)
@@ -49,7 +49,7 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return redirect()->back()->with('success', 'Listing removed from cart.');
+        return redirect()->back()->with('success', __('messages.listing_removed_from_cart'));
     }
 
 
@@ -57,7 +57,7 @@ class CartController extends Controller
     {
         $cartItems = session()->get('cart', []);
         if (empty($cartItems)) {
-            return redirect()->back()->with('error', 'Your cart is empty.');
+            return redirect()->back()->with('error', __('messages.cart_empty'));
         }
         
         // Add the listings to the bought table
@@ -69,6 +69,6 @@ class CartController extends Controller
         }
 
         session()->forget('cart');
-        return redirect()->back()->with('success', 'You have succesfully checked out.');
+        return redirect()->back()->with('success', __('messages.checked_out'));
     }
 }

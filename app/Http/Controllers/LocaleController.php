@@ -26,6 +26,6 @@ class LocaleController extends Controller {
                 break;
         }
 
-        return back()->with('success', 'Language changed to ' . $language . '.');
+        return back()->with('success', __('messages.language_changed') . $language . '.');
     }
 }
