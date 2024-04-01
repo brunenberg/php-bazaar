@@ -56,11 +56,13 @@ class CompanyController extends Controller
         $featuredListings = [];
         $featuredListingsJson = $company->featured_listings;
         $featuredListingsIds = json_decode($featuredListingsJson);
-        foreach ($featuredListingsIds as $key => $listing) {
-            $listing = $company->listings()->where('id', $listing)->first();
-            $featuredListings[] = $listing;
+        if($featuredListingsIds !== null){
+            foreach ($featuredListingsIds as $key => $listing) {
+                $listing = $company->listings()->where('id', $listing)->first();
+                $featuredListings[] = $listing;
+            }
         }
-
+        
         return view('company.show', compact('company', 'templates', 'featuredListings'));
     }
 
